@@ -9,9 +9,9 @@ import lombok.*;
 @EqualsAndHashCode
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "Bot0 messages")
+@Table(name = "Bot0messages")
 public class Bot0message {
     @Id
-    private Long message_type;
+    private String message_type;
     private String message_text;
 }

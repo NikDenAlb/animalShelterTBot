@@ -6,12 +6,12 @@ import com.pengrad.telegrambot.model.Message;
 import com.pengrad.telegrambot.model.Update;
 import com.pengrad.telegrambot.model.request.InlineKeyboardMarkup;
 import com.pengrad.telegrambot.request.SendMessage;
-import selfConstructed.animalShelterTBot.keyboard.Keyboard;
+import jakarta.annotation.PostConstruct;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
+import selfConstructed.animalShelterTBot.keyboard.Keyboard;
 
-import javax.annotation.PostConstruct;
 import java.util.List;
 
 @Service
@@ -67,8 +67,13 @@ public class TelegramBotUpdatesListener implements UpdatesListener {
                 + '\n' + "Для начала работы нажмите кнопку TEST";
         //добавление клавиатуры
         InlineKeyboardMarkup inlineKeyboardMarkup = keyboard.getTestInlineButton();
+
         //отправка сообщения в чат
-        telegramBot.execute(new SendMessage(chatId, welcomeMessage).replyMarkup(inlineKeyboardMarkup));
+
+        /*Кнопка отключена, её нажатие блокирует работу бота
+        telegramBot.execute(new SendMessage(chatId, welcomeMessage).replyMarkup(inlineKeyboardMarkup));*/
+
+        telegramBot.execute(new SendMessage(chatId, welcomeMessage));
         logger.info("Sending welcome message to chat {}: {}", chatId, welcomeMessage);
     }
 }

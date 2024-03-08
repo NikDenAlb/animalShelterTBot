@@ -63,3 +63,9 @@ CREATE TABLE CommandsForConsultation
     commands_for_consultation TEXT
 );
 
+-- changeset nikdenalb:2
+CREATE TABLE Bot0messages
+(
+    message_type TEXT PRIMARY KEY,
+    message_text TEXT
+);

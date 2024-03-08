@@ -11,6 +11,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import selfConstructed.animalShelterTBot.keyboard.Keyboard;
+import selfConstructed.animalShelterTBot.repository.Bot0Repository;
 
 import java.util.List;
 
@@ -22,10 +23,12 @@ public class TelegramBotUpdatesListener implements UpdatesListener {
     private final TelegramBot telegramBot;
 
     private final Keyboard keyboard;
+    private final Bot0Repository bot0Repository;
 
-    public TelegramBotUpdatesListener(TelegramBot telegramBot, Keyboard keyboard) {
+    public TelegramBotUpdatesListener(TelegramBot telegramBot, Keyboard keyboard, Bot0Repository bot0Repository) {
         this.telegramBot = telegramBot;
         this.keyboard = keyboard;
+        this.bot0Repository = bot0Repository;
     }
 
 
@@ -57,6 +60,7 @@ public class TelegramBotUpdatesListener implements UpdatesListener {
     }
 
     /**
+     * Дорабатывается ------
      * welcome message
      * added inline keyboard
      * sending welcome message to user with test button
@@ -73,7 +77,7 @@ public class TelegramBotUpdatesListener implements UpdatesListener {
         /*Кнопка отключена, её нажатие блокирует работу бота
         telegramBot.execute(new SendMessage(chatId, welcomeMessage).replyMarkup(inlineKeyboardMarkup));*/
 
-        telegramBot.execute(new SendMessage(chatId, welcomeMessage));
+        telegramBot.execute(new SendMessage(chatId, bot0Repository.findById("НП").get().getMessage_text()));
         logger.info("Sending welcome message to chat {}: {}", chatId, welcomeMessage);
     }
 }

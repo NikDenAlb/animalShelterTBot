@@ -9,7 +9,7 @@ import lombok.*;
 @EqualsAndHashCode
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "Report commands")
+@Table(name = "ReportCommands")
 public class ReportCommands {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

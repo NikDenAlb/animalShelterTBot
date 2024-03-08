@@ -10,7 +10,7 @@ import lombok.*;
 @EqualsAndHashCode
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "Commands for consultation")
+@Table(name = "CommandsForConsultation")
 public class CommandsForConsultation {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

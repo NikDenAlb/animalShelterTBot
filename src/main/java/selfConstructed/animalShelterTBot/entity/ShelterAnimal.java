@@ -9,7 +9,7 @@ import lombok.*;
 @EqualsAndHashCode
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "Shelter animal information")
+@Table(name = "ShelterAnimalInformation")
 public class ShelterAnimal {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

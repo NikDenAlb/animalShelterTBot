@@ -9,8 +9,16 @@ import org.springframework.stereotype.Component;
 public class Keyboard {
     public InlineKeyboardMarkup getTestInlineButton() {
         InlineKeyboardMarkup inlineKeyboardMarkup = new InlineKeyboardMarkup();
-        InlineKeyboardButton button1 = new InlineKeyboardButton("КНОПКА").callbackData("callback");
+        InlineKeyboardButton button1 = new InlineKeyboardButton("Let's GO!").callbackData("callback");
         inlineKeyboardMarkup.addRow(button1);
+        return inlineKeyboardMarkup;
+    }
+
+    public InlineKeyboardMarkup getShelter() {
+        InlineKeyboardMarkup inlineKeyboardMarkup = new InlineKeyboardMarkup();
+        InlineKeyboardButton button1 = new InlineKeyboardButton("Киски").callbackData("киски");
+        InlineKeyboardButton button2 = new InlineKeyboardButton("Песики").callbackData("песики");
+        inlineKeyboardMarkup.addRow(button1, button2);
         return inlineKeyboardMarkup;
     }
 }

@@ -1,4 +1,4 @@
-package selfConstructed.animalShelterTBot.entity;
+package selfConstructed.animalShelterTBot.model.dog;
 
 import jakarta.persistence.*;
 import lombok.*;
@@ -9,14 +9,15 @@ import lombok.*;
 @EqualsAndHashCode
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "Shelter animal information")
-public class ShelterAnimal {
+@Table(name = "dogs")
+public class Dog {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long idAnimal;
-    private String nameAnimal;
-    private String kindOfAnimal;
+    private Long id;
+    private String nameDog;
     private Long adult;
     private String breed;
-    private String shelter;
+//    @ManyToOne
+//    @JoinColumn(name = "shelterDog_id")
+//    private ShelterDog shelterDog;
 }

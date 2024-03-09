@@ -1,4 +1,4 @@
-package selfConstructed.animalShelterTBot.entity;
+package selfConstructed.animalShelterTBot.model.cat;
 
 import jakarta.persistence.*;
 import lombok.*;
@@ -9,14 +9,15 @@ import lombok.*;
 @EqualsAndHashCode
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "Shelter info")
-public class Shelter {
+@Table(name = "shelters_Cat")
+public class ShelterCat {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id_shelter;
+    private Long id;
     private String nameOfTheShelter;
-    private String adress;
-    private String kindOfAnimal;
+    private String address;
     private String openingHours;
     private String contactInfo;
+//    @OneToMany(mappedBy = "shelterCat")
+//    private Set<Dog> cats;
 }

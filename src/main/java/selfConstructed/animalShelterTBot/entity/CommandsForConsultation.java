@@ -1,7 +1,8 @@
-package empty;
+package selfConstructed.animalShelterTBot.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
+
 
 @Entity
 @Getter
@@ -9,10 +10,10 @@ import lombok.*;
 @EqualsAndHashCode
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "Commands for greeting")
-public class CommandsForGreeting {
+@Table(name = "Commands for consultation")
+public class CommandsForConsultation {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String commands_for_greeting;
+    private String commandsForConsultation;
 }

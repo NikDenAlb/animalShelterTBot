@@ -1,4 +1,4 @@
-package empty;
+package selfConstructed.animalShelterTBot.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
@@ -10,7 +10,7 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "Volunteer info")
-public class VolunteerInfo {
+public class Volunteer {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long idVolunteer;

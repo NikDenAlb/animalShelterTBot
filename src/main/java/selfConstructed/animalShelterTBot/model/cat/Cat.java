@@ -17,7 +17,7 @@ public class Cat {
     private String nameCat;
     private Long adult;
     private String breed;
-//    @ManyToOne
-//    @JoinColumn(name = "shelterCat_id")
-//    private ShelterCat shelterCat;
+    @ManyToOne
+    @JoinColumn(name = "shelterCat_id")
+    private ShelterCat shelterCat;
 }

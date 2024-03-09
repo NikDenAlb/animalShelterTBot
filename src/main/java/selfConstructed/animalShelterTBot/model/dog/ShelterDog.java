@@ -20,6 +20,6 @@ public class ShelterDog {
     private String address;
     private String openingHours;
     private String contactInfo;
-//    @OneToMany(mappedBy = "shelterDog")
-//    private Set<Dog> dogs;
+    @OneToMany(mappedBy = "shelterDog")
+    private Set<Dog> dogs;
 }

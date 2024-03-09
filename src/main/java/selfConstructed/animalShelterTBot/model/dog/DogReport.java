@@ -18,7 +18,7 @@ public class DogReport {
     private String dogDiet;
     private String changeInBehavior;
     private String generalInformation;
-//    @OneToOne
-//    @JoinColumn(name = "user_id")
-//    UserDog userDog;
+    @OneToOne
+    @JoinColumn(name = "user_id")
+    UserDog userDog;
 }

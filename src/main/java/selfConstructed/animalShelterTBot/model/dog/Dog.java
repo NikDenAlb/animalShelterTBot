@@ -17,7 +17,7 @@ public class Dog {
     private String nameDog;
     private Long adult;
     private String breed;
-//    @ManyToOne
-//    @JoinColumn(name = "shelterDog_id")
-//    private ShelterDog shelterDog;
+    @ManyToOne
+    @JoinColumn(name = "shelterDog_id")
+    private ShelterDog shelterDog;
 }

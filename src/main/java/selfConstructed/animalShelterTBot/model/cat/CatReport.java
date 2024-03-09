@@ -18,7 +18,7 @@ public class CatReport {
     private String catDiet;
     private String changeInBehavior;
     private String generalInformation;
-//    @OneToOne
-//    @JoinColumn(name = "user_id")
-//    UserCat userCat;
+    @OneToOne
+    @JoinColumn(name = "user_id")
+    UserCat userCat;
 }

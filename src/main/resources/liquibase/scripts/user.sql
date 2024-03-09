@@ -5,16 +5,17 @@ CREATE TABLE cat_report
 (
     id                  BIGSERIAL PRIMARY KEY,
     photo               TEXT,
-    cat_diet         TEXT,
+    cat_diet            TEXT,
     change_in_behavior  TEXT,
     general_information TEXT
 );
 CREATE TABLE cats
 (
-    id         BIGSERIAL PRIMARY KEY,
-    name_cat   TEXT   NOT NULL,
-    adult      BIGINT NOT NULL,
-    breed      TEXT NOT NULL
+    id             BIGSERIAL PRIMARY KEY,
+    name_cat       TEXT   NOT NULL,
+    adult          BIGINT NOT NULL,
+    breed          TEXT   NOT NULL,
+    shelter_cat_id BIGINT NOT NULL
 );
 CREATE TABLE shelters_cat
 (
@@ -27,27 +28,27 @@ CREATE TABLE shelters_cat
 CREATE TABLE users_cat
 (
     id           BIGSERIAL PRIMARY KEY,
-    chat_id      BIGINT NOT NULL ,
-    full_name    TEXT NOT NULL,
+    chat_id      BIGINT NOT NULL,
+    full_name    TEXT   NOT NULL,
     adult        BIGINT,
-    address      TEXT NOT NULL,
-    phone_number TEXT NOT NULL,
-    isAdopted    BOOLEAN DEFAULT false
+    address      TEXT   NOT NULL,
+    phone_number TEXT   NOT NULL,
+    is_adopted    BOOLEAN DEFAULT false
 );
 CREATE TABLE dog_report
 (
     id                  BIGSERIAL PRIMARY KEY,
     photo               TEXT,
-    dog_diet         TEXT,
+    dog_diet            TEXT,
     change_in_behavior  TEXT,
     general_information TEXT
 );
 CREATE TABLE dogs
 (
-    id         BIGSERIAL PRIMARY KEY,
-    name_dog   TEXT   NOT NULL,
-    adult      BIGINT NOT NULL,
-    breed      TEXT NOT NULL
+    id       BIGSERIAL PRIMARY KEY,
+    name_dog TEXT   NOT NULL,
+    adult    BIGINT NOT NULL,
+    breed    TEXT   NOT NULL
 );
 CREATE TABLE shelters_dog
 (
@@ -60,12 +61,12 @@ CREATE TABLE shelters_dog
 CREATE TABLE users_dog
 (
     id           BIGSERIAL PRIMARY KEY,
-    chat_id      BIGINT NOT NULL ,
-    full_name    TEXT NOT NULL,
+    chat_id      BIGINT NOT NULL,
+    full_name    TEXT   NOT NULL,
     adult        BIGINT,
-    address      TEXT NOT NULL,
-    phone_number TEXT NOT NULL,
-    isAdopted    BOOLEAN DEFAULT false
+    address      TEXT   NOT NULL,
+    phone_number TEXT   NOT NULL,
+    is_adopted    BOOLEAN DEFAULT false
 );
 -- changeset nikdenalb:2
 CREATE TABLE Bot0messages

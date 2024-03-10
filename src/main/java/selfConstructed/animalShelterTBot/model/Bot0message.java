@@ -9,7 +9,7 @@ import lombok.*;
 @EqualsAndHashCode
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "Bot0messages")
+@Table(name = "bot0messages")
 public class Bot0message {
     @Id
     private String message_type;

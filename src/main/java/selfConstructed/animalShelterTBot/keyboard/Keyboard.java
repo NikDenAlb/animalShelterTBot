@@ -17,7 +17,7 @@ public class Keyboard {
     public InlineKeyboardMarkup getShelter() {
         InlineKeyboardMarkup inlineKeyboardMarkup = new InlineKeyboardMarkup();
         InlineKeyboardButton button1 = new InlineKeyboardButton("Коты").callbackData("Коты");
-        InlineKeyboardButton button2 = new InlineKeyboardButton("Коты").callbackData("Коты");
+        InlineKeyboardButton button2 = new InlineKeyboardButton("Собаки").callbackData("Собаки");
         inlineKeyboardMarkup.addRow(button1, button2);
         return inlineKeyboardMarkup;
     }

@@ -9,7 +9,6 @@ import org.springframework.stereotype.Component;
 public class Keyboard {
     public InlineKeyboardMarkup getTestInlineButton() {
         InlineKeyboardMarkup inlineKeyboardMarkup = new InlineKeyboardMarkup();
-
         InlineKeyboardButton button1 = new InlineKeyboardButton("Начнем работу").callbackData("Начнем работу");
         inlineKeyboardMarkup.addRow(button1);
         return inlineKeyboardMarkup;
@@ -23,9 +22,14 @@ public class Keyboard {
         return inlineKeyboardMarkup;
     }
 
-        InlineKeyboardButton button1 = new InlineKeyboardButton("КНОПКА").callbackData("callback");
+    public InlineKeyboardMarkup getMenuAboutShelter() {
+        InlineKeyboardMarkup inlineKeyboardMarkup = new InlineKeyboardMarkup();
+        InlineKeyboardButton button1 = new InlineKeyboardButton("Узнать информацию о приюте").callbackData("Информация");
+        InlineKeyboardButton button2 = new InlineKeyboardButton("Как взять животное").callbackData("Как взять");
+        InlineKeyboardButton button3 = new InlineKeyboardButton("Прислать отчет о питомце").callbackData("Отчет");
         inlineKeyboardMarkup.addRow(button1);
+        inlineKeyboardMarkup.addRow(button2);
+        inlineKeyboardMarkup.addRow(button3);
         return inlineKeyboardMarkup;
     }
-
 }

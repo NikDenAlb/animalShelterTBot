@@ -57,14 +57,29 @@ public class MsgHandler {
         }
         if ("Коты".equals(text)) {
             processButton(chatId, text);
-            sendMock(chatId);
+            getShelterMenu(chatId);
             disableButtonsTemporarily();
             return;
         }
         if ("Собаки".equals(text)) {
             processButton(chatId, text);
-            sendMock(chatId);
+            getShelterMenu(chatId);
             disableButtonsTemporarily();
+            return;
+        }
+        if ("Информация".equals(text)) {
+            processButton(chatId, text);
+            sendMock(chatId);
+            return;
+        }
+        if ("Как взять".equals(text)) {
+            processButton(chatId, text);
+            sendMock(chatId);
+            return;
+        }
+        if ("Отчет".equals(text)) {
+            processButton(chatId, text);
+            sendMock(chatId);
         }
     }
 
@@ -85,7 +100,14 @@ public class MsgHandler {
         String message = "Выбери нужный приют \uD83D\uDC47";
         InlineKeyboardMarkup inlineKeyboardMarkup = keyboard.getShelter();
         telegramBot.execute(new SendMessage(chatId, message).replyMarkup(inlineKeyboardMarkup));
-        logger.info("Отправлено приветственное сообщение в чат {}: {}", chatId, message);
+        logger.info("Отправлено сообщение с выбором приюта в чат {}: {}", chatId, message);
+    }
+
+    private void getShelterMenu(long chatId) {
+        String message = "Ознакомьтесь с меню и выберите нужный пункт";
+        InlineKeyboardMarkup inlineKeyboardMarkup = keyboard.getMenuAboutShelter();
+        telegramBot.execute(new SendMessage(chatId, message).replyMarkup(inlineKeyboardMarkup));
+        logger.info("Отправлено сообщение с выбором меню в чат {}: {}", chatId, message);
     }
 
     private void sendMock(long chatId) {

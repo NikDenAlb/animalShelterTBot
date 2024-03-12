@@ -5,12 +5,12 @@ import com.pengrad.telegrambot.UpdatesListener;
 import com.pengrad.telegrambot.model.CallbackQuery;
 import com.pengrad.telegrambot.model.Message;
 import com.pengrad.telegrambot.model.Update;
+import jakarta.annotation.PostConstruct;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import selfConstructed.animalShelterTBot.messageHandler.MsgHandler;
 
-import javax.annotation.PostConstruct;
 import java.util.List;
 
 @Service

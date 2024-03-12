@@ -1,65 +1,76 @@
 -- liquibase formatted sql
 
 -- changeset ihlopachev:1
-CREATE TABLE AnimalReport
+CREATE TABLE cat_report
 (
-    idAnimal            BIGSERIAL PRIMARY KEY,
+    id                  BIGSERIAL PRIMARY KEY,
     photo               TEXT,
-    animal_diet         TEXT,
-    general_information TEXT,
-    change_in_behavior  TEXT
+    cat_diet            TEXT,
+    change_in_behavior  TEXT,
+    general_information TEXT
 );
-CREATE TABLE CommandsForGreeting
+CREATE TABLE cats
 (
-    id                    BIGSERIAL PRIMARY KEY,
-    commands_for_greeting TEXT
+    id             BIGSERIAL PRIMARY KEY,
+    name_cat       TEXT   NOT NULL,
+    adult          BIGINT NOT NULL,
+    breed          TEXT   NOT NULL,
+    shelter_cat_id BIGINT NOT NULL
 );
-CREATE TABLE ReportCommands
+CREATE TABLE shelters_cat
 (
-    id              BIGSERIAL PRIMARY KEY,
-    report_commands TEXT
-);
-CREATE TABLE ShelterAnimalInformation
-(
-    id_animal      BIGSERIAL PRIMARY KEY,
-    name_animal    TEXT NOT NULL,
-    kind_of_animal TEXT NOT NULL,
-    adult          BIGINT,
-    breed          TEXT,
-    shelter_id     TEXT NOT NULL
-);
-CREATE TABLE ShelterInfo
-(
-    id_shelter          BIGSERIAL PRIMARY KEY,
+    id                  BIGSERIAL PRIMARY KEY,
     name_of_the_shelter TEXT NOT NULL,
     address             TEXT NOT NULL,
-    kind_of_animal      TEXT NOT NULL,
     opening_hours       TEXT NOT NULL,
     contact_info        TEXT NOT NULL
 );
-CREATE TABLE UserInfo
+CREATE TABLE users_cat
 (
-    id_user          BIGSERIAL PRIMARY KEY,
-    full_name        TEXT   NOT NULL,
-    adult            BIGINT,
-    passport_details TEXT   NOT NULL,
-    adress           TEXT   NOT NULL,
-    phone_number     TEXT   NOT NULL,
-    user_statusTEXT  BIGINT NOT NULL,
-    id_animal        BIGINT,
-    trial_period     TEXT
+    id           BIGSERIAL PRIMARY KEY,
+    chat_id      BIGINT NOT NULL,
+    full_name    TEXT   NOT NULL,
+    adult        BIGINT,
+    address      TEXT   NOT NULL,
+    phone_number TEXT   NOT NULL,
+    is_adopted    BOOLEAN DEFAULT false
 );
-CREATE TABLE VolunteerInfo
+CREATE TABLE dog_report
 (
-    id_volunteer    BIGSERIAL PRIMARY KEY,
-    full_name       TEXT NOT NULL,
-    adress_shelter  TEXT NOT NULL,
-    contact_details TEXT NOT NULL,
-    opening_hours   TEXT NOT NULL
+    id                  BIGSERIAL PRIMARY KEY,
+    photo               TEXT,
+    dog_diet            TEXT,
+    change_in_behavior  TEXT,
+    general_information TEXT
 );
-CREATE TABLE CommandsForConsultation
+CREATE TABLE dogs
 (
-    id_volunteer              BIGSERIAL PRIMARY KEY,
-    commands_for_consultation TEXT
+    id       BIGSERIAL PRIMARY KEY,
+    name_dog TEXT   NOT NULL,
+    adult    BIGINT NOT NULL,
+    breed    TEXT   NOT NULL
 );
-
+CREATE TABLE shelters_dog
+(
+    id                  BIGSERIAL PRIMARY KEY,
+    name_of_the_shelter TEXT NOT NULL,
+    address             TEXT NOT NULL,
+    opening_hours       TEXT NOT NULL,
+    contact_info        TEXT NOT NULL
+);
+CREATE TABLE users_dog
+(
+    id           BIGSERIAL PRIMARY KEY,
+    chat_id      BIGINT NOT NULL,
+    full_name    TEXT   NOT NULL,
+    adult        BIGINT,
+    address      TEXT   NOT NULL,
+    phone_number TEXT   NOT NULL,
+    is_adopted    BOOLEAN DEFAULT false
+);
+-- changeset nikdenalb:2
+CREATE TABLE Bot0messages
+(
+    message_type TEXT PRIMARY KEY,
+    message_text TEXT
+);

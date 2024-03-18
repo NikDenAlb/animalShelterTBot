@@ -41,11 +41,28 @@ public class Keyboard {
      *
      * @return InlineKeyboardMarkup object with buttons for the menu
      */
-    public InlineKeyboardMarkup getMenuAboutShelter() {
+    public InlineKeyboardMarkup getMenuAboutShelterDogs() {
         InlineKeyboardMarkup inlineKeyboardMarkup = new InlineKeyboardMarkup();
-        InlineKeyboardButton button1 = new InlineKeyboardButton("Узнать информацию о приюте").callbackData("Информация");
-        InlineKeyboardButton button2 = new InlineKeyboardButton("Как взять животное").callbackData("Как взять");
-        InlineKeyboardButton button3 = new InlineKeyboardButton("Прислать отчет о питомце").callbackData("Отчет");
+        InlineKeyboardButton button1 = new InlineKeyboardButton("Узнать информацию о приюте")
+                .callbackData("Информация собак");
+        InlineKeyboardButton button2 = new InlineKeyboardButton("Как взять животное")
+                .callbackData("Как взять собак");
+        InlineKeyboardButton button3 = new InlineKeyboardButton("Прислать отчет о питомце")
+                .callbackData("Отчет собак");
+        inlineKeyboardMarkup.addRow(button1);
+        inlineKeyboardMarkup.addRow(button2);
+        inlineKeyboardMarkup.addRow(button3);
+        return inlineKeyboardMarkup;
+    }
+
+    public InlineKeyboardMarkup getMenuAboutShelterCats() {
+        InlineKeyboardMarkup inlineKeyboardMarkup = new InlineKeyboardMarkup();
+        InlineKeyboardButton button1 = new InlineKeyboardButton("Узнать информацию о приюте")
+                .callbackData("Информация кот");
+        InlineKeyboardButton button2 = new InlineKeyboardButton("Как взять животное")
+                .callbackData("Как взять кот");
+        InlineKeyboardButton button3 = new InlineKeyboardButton("Прислать отчет о питомце")
+                .callbackData("Отчет кот");
         inlineKeyboardMarkup.addRow(button1);
         inlineKeyboardMarkup.addRow(button2);
         inlineKeyboardMarkup.addRow(button3);

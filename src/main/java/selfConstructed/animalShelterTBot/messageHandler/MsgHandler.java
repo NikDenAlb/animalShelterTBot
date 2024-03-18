@@ -9,7 +9,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import selfConstructed.animalShelterTBot.keyboard.Keyboard;
+import selfConstructed.animalShelterTBot.model.dog.ShelterDog;
+import selfConstructed.animalShelterTBot.repository.ShelterCatRepo;
+import selfConstructed.animalShelterTBot.repository.ShelterDogRepo;
 
+import java.util.Optional;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
@@ -23,6 +27,8 @@ public class MsgHandler {
 
     private final Logger logger = LoggerFactory.getLogger(MsgHandler.class);
     private final TelegramBot telegramBot;
+    private final ShelterDogRepo dogRepo;
+    private final ShelterCatRepo catRepo;
     private final Keyboard keyboard;
     private final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
     private final boolean buttonEnabled = true;
@@ -31,10 +37,14 @@ public class MsgHandler {
      * Constructor for MsgHandler.
      *
      * @param telegramBot TelegramBot object
+     * @param dogRepo
+     * @param catRepo
      * @param keyboard    Keyboard object
      */
-    public MsgHandler(TelegramBot telegramBot, Keyboard keyboard) {
+    public MsgHandler(TelegramBot telegramBot, ShelterDogRepo dogRepo, ShelterCatRepo catRepo, Keyboard keyboard) {
         this.telegramBot = telegramBot;
+        this.dogRepo = dogRepo;
+        this.catRepo = catRepo;
         this.keyboard = keyboard;
     }
 
@@ -70,27 +80,30 @@ public class MsgHandler {
         }
         if ("Коты".equals(text)) {
             processButton(chatId, text);
-            getShelterMenu(chatId);
+            getShelterMenuCats(chatId);
             disableButtonsTemporarily();
             return;
         }
         if ("Собаки".equals(text)) {
             processButton(chatId, text);
-            getShelterMenu(chatId);
+            getShelterMenuDogs(chatId);
             disableButtonsTemporarily();
             return;
         }
-        if ("Информация".equals(text)) {
-            processButton(chatId, text);
-            sendMock(chatId);
-            return;
+        if ("Информация собак".equals(text)) {
+            //processButton(chatId, text);
+            disableButtonsTemporarily();
+            shelterDogInfo(chatId);//даем инфо по приюту
+            return;//нужно добавить кнопу возврата в предыдущее меню
         }
         if ("Как взять".equals(text)) {
+            disableButtonsTemporarily();
             processButton(chatId, text);
             sendMock(chatId);
             return;
         }
         if ("Отчет".equals(text)) {
+            disableButtonsTemporarily();
             processButton(chatId, text);
             sendMock(chatId);
         }
@@ -126,9 +139,16 @@ public class MsgHandler {
      *
      * @param chatId user's chat identifier
      */
-    private void getShelterMenu(long chatId) {
+    private void getShelterMenuDogs(long chatId) {
         String message = "Ознакомьтесь с меню и выберите нужный пункт";
-        InlineKeyboardMarkup inlineKeyboardMarkup = keyboard.getMenuAboutShelter();
+        InlineKeyboardMarkup inlineKeyboardMarkup = keyboard.getMenuAboutShelterDogs();
+        telegramBot.execute(new SendMessage(chatId, message).replyMarkup(inlineKeyboardMarkup));
+        logger.info("Отправлено сообщение с выбором меню в чат {}: {}", chatId, message);
+    }
+
+    private void getShelterMenuCats(long chatId) {
+        String message = "Ознакомьтесь с меню и выберите нужный пункт";
+        InlineKeyboardMarkup inlineKeyboardMarkup = keyboard.getMenuAboutShelterCats();
         telegramBot.execute(new SendMessage(chatId, message).replyMarkup(inlineKeyboardMarkup));
         logger.info("Отправлено сообщение с выбором меню в чат {}: {}", chatId, message);
     }
@@ -156,5 +176,19 @@ public class MsgHandler {
     private void disableButtonsTemporarily() {
         AtomicBoolean buttonEnabled = new AtomicBoolean(false);
         scheduler.schedule(() -> buttonEnabled.set(true), 30, TimeUnit.SECONDS);
+    }
+
+    private void shelterDogInfo(long chatId) {
+        Optional<ShelterDog> dog = dogRepo.findById("1");
+        if (dog.isPresent()) {
+            ShelterDog shelterDog = dog.get();
+            String message = "Адрес : " + shelterDog.getAddress() +
+                    "\nКонтактная информация : " + shelterDog.getContactInfo() +
+                    "\nНаименование : " + shelterDog.getNameOfTheShelter() +
+                    "\nВремя работы: " + shelterDog.getOpeningHours();
+            telegramBot.execute(new SendMessage(chatId, message));
+        } else {
+            telegramBot.execute(new SendMessage(chatId, "Нет подходящих приютов"));
+        }
     }
 }

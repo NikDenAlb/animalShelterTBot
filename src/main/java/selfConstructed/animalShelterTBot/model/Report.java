@@ -1,24 +1,24 @@
-package selfConstructed.animalShelterTBot.model.cat;
+package selfConstructed.animalShelterTBot.model;
 
 import jakarta.persistence.*;
 import lombok.*;
 
 @Entity
-@EqualsAndHashCode
 @Getter
 @Setter
+@EqualsAndHashCode
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "cat_report")
-public class CatReport {
+@Table(name = "reports")
+public class Report {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String photo;
-    private String catDiet;
+    private String diet;
     private String changeInBehavior;
     private String generalInformation;
     @OneToOne
     @JoinColumn(name = "user_id")
-    UserCat userCat;
+    User user;
 }

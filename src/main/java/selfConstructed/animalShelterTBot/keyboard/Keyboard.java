@@ -4,9 +4,17 @@ import com.pengrad.telegrambot.model.request.InlineKeyboardButton;
 import com.pengrad.telegrambot.model.request.InlineKeyboardMarkup;
 import org.springframework.stereotype.Component;
 
-
+/**
+ * A class representing a keyboard for a Telegram bot.
+ * Contains methods for creating different types of keyboards.
+ */
 @Component
 public class Keyboard {
+    /**
+     * Creates a keyboard with one "Начнем работу" button.
+     *
+     * @return InlineKeyboardMarkup object with the "Начнем работу" button
+     */
     public InlineKeyboardMarkup getTestInlineButton() {
         InlineKeyboardMarkup inlineKeyboardMarkup = new InlineKeyboardMarkup();
         InlineKeyboardButton button1 = new InlineKeyboardButton("Начнем работу").callbackData("Начнем работу");
@@ -14,6 +22,11 @@ public class Keyboard {
         return inlineKeyboardMarkup;
     }
 
+    /**
+     * Creates a keyboard with two buttons "Cats" and "Dogs".
+     *
+     * @return InlineKeyboardMarkup object with the "Cats" and "Dogs" buttons
+     */
     public InlineKeyboardMarkup getShelter() {
         InlineKeyboardMarkup inlineKeyboardMarkup = new InlineKeyboardMarkup();
         InlineKeyboardButton button1 = new InlineKeyboardButton("Коты").callbackData("Коты");
@@ -22,6 +35,12 @@ public class Keyboard {
         return inlineKeyboardMarkup;
     }
 
+    /**
+     * Creates a menu with buttons for getting shelter information, adopting an animal,
+     * and submitting a pet report.
+     *
+     * @return InlineKeyboardMarkup object with buttons for the menu
+     */
     public InlineKeyboardMarkup getMenuAboutShelter() {
         InlineKeyboardMarkup inlineKeyboardMarkup = new InlineKeyboardMarkup();
         InlineKeyboardButton button1 = new InlineKeyboardButton("Узнать информацию о приюте").callbackData("Информация");

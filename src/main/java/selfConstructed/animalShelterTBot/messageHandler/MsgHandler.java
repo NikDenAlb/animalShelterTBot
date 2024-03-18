@@ -15,6 +15,9 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 
+/**
+ * Handler for messages from the user and callbacks.
+ */
 @Service
 public class MsgHandler {
 
@@ -24,13 +27,21 @@ public class MsgHandler {
     private final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
     private final boolean buttonEnabled = true;
 
+    /**
+     * Constructor for MsgHandler.
+     *
+     * @param telegramBot TelegramBot object
+     * @param keyboard    Keyboard object
+     */
     public MsgHandler(TelegramBot telegramBot, Keyboard keyboard) {
         this.telegramBot = telegramBot;
         this.keyboard = keyboard;
     }
 
     /**
-     * processing message from user
+     * Processing a message from the user.
+     *
+     * @param message Message object
      */
     public void handleMessage(Message message) {
         Long chatId = message.chat().id();
@@ -41,7 +52,9 @@ public class MsgHandler {
     }
 
     /**
-     * processing callback from user
+     * Processing a callback from the user.
+     *
+     * @param callbackQuery object CallbackQuery
      */
     public void handleCallBack(CallbackQuery callbackQuery) {
         Long chatId = callbackQuery.from().id();
@@ -84,9 +97,9 @@ public class MsgHandler {
     }
 
     /**
-     * welcome message
-     * added inline keyboard
-     * sending welcome message to user with test button
+     * Sends a welcome message to the user with a built-in keyboard.
+     *
+     * @param chatId user's chat identifier
      */
     private void sendWelcomeMessage(long chatId) {
         String welcomeMessage = "Добро пожаловать! Я бот."
@@ -96,6 +109,11 @@ public class MsgHandler {
         logger.info("Отправлено приветственное сообщение в чат {}: {}", chatId, welcomeMessage);
     }
 
+    /**
+     * Sends a message with the choice of shelter to the user.
+     *
+     * @param chatId user's chat identifier
+     */
     private void chooseShelter(long chatId) {
         String message = "Выбери нужный приют \uD83D\uDC47";
         InlineKeyboardMarkup inlineKeyboardMarkup = keyboard.getShelter();
@@ -103,6 +121,11 @@ public class MsgHandler {
         logger.info("Отправлено сообщение с выбором приюта в чат {}: {}", chatId, message);
     }
 
+    /**
+     * Sends a message with the shelter menu to the user.
+     *
+     * @param chatId user's chat identifier
+     */
     private void getShelterMenu(long chatId) {
         String message = "Ознакомьтесь с меню и выберите нужный пункт";
         InlineKeyboardMarkup inlineKeyboardMarkup = keyboard.getMenuAboutShelter();
@@ -115,14 +138,23 @@ public class MsgHandler {
         telegramBot.execute(new SendMessage(chatId, message));
     }
 
+    /**
+     * Handles a button click by the user.
+     *
+     * @param chatId   user's chat identifier
+     * @param callBack callback text
+     */
     private void processButton(long chatId, String callBack) {
         String message = "Вы нажали на кнопку " + callBack;
         telegramBot.execute(new SendMessage(chatId, message));
         logger.info("Пользователь {} нажал на кнопку {}", chatId, callBack);
     }
 
+    /**
+     * Temporarily disables buttons for a specified time.
+     */
     private void disableButtonsTemporarily() {
         AtomicBoolean buttonEnabled = new AtomicBoolean(false);
-        scheduler.schedule(() -> buttonEnabled.set(true), 30, TimeUnit.SECONDS); // Enable buttons after 30 seconds
+        scheduler.schedule(() -> buttonEnabled.set(true), 30, TimeUnit.SECONDS);
     }
 }

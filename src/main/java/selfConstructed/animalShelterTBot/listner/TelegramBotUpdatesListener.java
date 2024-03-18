@@ -13,6 +13,10 @@ import selfConstructed.animalShelterTBot.messageHandler.MsgHandler;
 
 import java.util.List;
 
+/**
+ * Telegram bot update listener.
+ * Processes incoming updates and passes them to the message handler.
+ */
 @Service
 public class TelegramBotUpdatesListener implements UpdatesListener {
 
@@ -22,19 +26,32 @@ public class TelegramBotUpdatesListener implements UpdatesListener {
 
     private final MsgHandler messageHandler;
 
-
+    /**
+     * Constructor for TelegramBotUpdatesListener.
+     *
+     * @param telegramBot    TelegramBot object
+     * @param messageHandler MsgHandler object
+     */
     public TelegramBotUpdatesListener(TelegramBot telegramBot, MsgHandler messageHandler) {
         this.telegramBot = telegramBot;
         this.messageHandler = messageHandler;
     }
 
-
+    /**
+     * Initializes the listener after construction.
+     * Sets this object as an update listener for the Telegram bot.
+     */
     @PostConstruct
     public void init() {
         telegramBot.setUpdatesListener(this);
-
     }
 
+    /**
+     * Processes the list of updates from the Telegram bot.
+     *
+     * @param updates list of updates
+     * @return CONFIRMED_UPDATES_ALL to confirm that all updates are processed
+     */
     @Override
     public int process(List<Update> updates) {
         updates.forEach(update -> {
@@ -50,5 +67,4 @@ public class TelegramBotUpdatesListener implements UpdatesListener {
         });
         return UpdatesListener.CONFIRMED_UPDATES_ALL;
     }
-
 }

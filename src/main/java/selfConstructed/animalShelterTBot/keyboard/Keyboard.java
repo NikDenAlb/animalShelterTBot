@@ -43,10 +43,10 @@ public class Keyboard {
      */
     public InlineKeyboardMarkup getMenuAboutShelterDogs() {
         InlineKeyboardMarkup inlineKeyboardMarkup = new InlineKeyboardMarkup();
-        InlineKeyboardButton button1 = new InlineKeyboardButton("Узнать информацию о приюте")
-                .callbackData("Информация собак");
+        InlineKeyboardButton button1 = new InlineKeyboardButton("Узнать информацию о приюте для собак")
+                .callbackData("Информация о приюте для собак");
         InlineKeyboardButton button2 = new InlineKeyboardButton("Как взять животное")
-                .callbackData("Как взять собак");
+                .callbackData("Как взять собаку");
         InlineKeyboardButton button3 = new InlineKeyboardButton("Прислать отчет о питомце")
                 .callbackData("Отчет собак");
         inlineKeyboardMarkup.addRow(button1);
@@ -57,10 +57,10 @@ public class Keyboard {
 
     public InlineKeyboardMarkup getMenuAboutShelterCats() {
         InlineKeyboardMarkup inlineKeyboardMarkup = new InlineKeyboardMarkup();
-        InlineKeyboardButton button1 = new InlineKeyboardButton("Узнать информацию о приюте")
-                .callbackData("Информация кот");
+        InlineKeyboardButton button1 = new InlineKeyboardButton("Узнать информацию о приюте для котов")
+                .callbackData("Информация о приюте для котов");
         InlineKeyboardButton button2 = new InlineKeyboardButton("Как взять животное")
-                .callbackData("Как взять кот");
+                .callbackData("Как взять кота");
         InlineKeyboardButton button3 = new InlineKeyboardButton("Прислать отчет о питомце")
                 .callbackData("Отчет кот");
         inlineKeyboardMarkup.addRow(button1);

@@ -9,6 +9,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import selfConstructed.animalShelterTBot.keyboard.Keyboard;
+import selfConstructed.animalShelterTBot.model.cat.ShelterCat;
 import selfConstructed.animalShelterTBot.model.dog.ShelterDog;
 import selfConstructed.animalShelterTBot.repository.ShelterCatRepo;
 import selfConstructed.animalShelterTBot.repository.ShelterDogRepo;
@@ -37,8 +38,8 @@ public class MsgHandler {
      * Constructor for MsgHandler.
      *
      * @param telegramBot TelegramBot object
-     * @param dogRepo
-     * @param catRepo
+     * @param dogRepo     DogRepository object
+     * @param catRepo     CatRepository object
      * @param keyboard    Keyboard object
      */
     public MsgHandler(TelegramBot telegramBot, ShelterDogRepo dogRepo, ShelterCatRepo catRepo, Keyboard keyboard) {
@@ -90,10 +91,16 @@ public class MsgHandler {
             disableButtonsTemporarily();
             return;
         }
-        if ("Информация собак".equals(text)) {
-            //processButton(chatId, text);
+        if ("Информация о приюте для собак".equals(text)) {
+            processButton(chatId, text);
             disableButtonsTemporarily();
             shelterDogInfo(chatId);//даем инфо по приюту
+            return;//нужно добавить кнопу возврата в предыдущее меню
+        }
+        if ("Информация о приюте для котов".equals(text)) {
+            processButton(chatId, text);
+            disableButtonsTemporarily();
+            shelterCatInfo(chatId);//даем инфо по приюту
             return;//нужно добавить кнопу возврата в предыдущее меню
         }
         if ("Как взять".equals(text)) {
@@ -147,7 +154,7 @@ public class MsgHandler {
     }
 
     private void getShelterMenuCats(long chatId) {
-        String message = "Ознакомьтесь с меню и выберите нужный пункт";
+        String message = "В следующем меню выберите интересующий вас пункт";
         InlineKeyboardMarkup inlineKeyboardMarkup = keyboard.getMenuAboutShelterCats();
         telegramBot.execute(new SendMessage(chatId, message).replyMarkup(inlineKeyboardMarkup));
         logger.info("Отправлено сообщение с выбором меню в чат {}: {}", chatId, message);
@@ -186,6 +193,20 @@ public class MsgHandler {
                     "\nКонтактная информация : " + shelterDog.getContactInfo() +
                     "\nНаименование : " + shelterDog.getNameOfTheShelter() +
                     "\nВремя работы: " + shelterDog.getOpeningHours();
+            telegramBot.execute(new SendMessage(chatId, message));
+        } else {
+            telegramBot.execute(new SendMessage(chatId, "Нет подходящих приютов"));
+        }
+    }
+
+    private void shelterCatInfo(long chatId) {
+        Optional<ShelterCat> cat = catRepo.findById("1");
+        if (cat.isPresent()) {
+            ShelterCat shelterCat = cat.get();
+            String message = "Адрес : " + shelterCat.getAddress() +
+                    "\nКонтактная информация : " + shelterCat.getContactInfo() +
+                    "\nНаименование : " + shelterCat.getNameOfTheShelter() +
+                    "\nВремя работы: " + shelterCat.getOpeningHours();
             telegramBot.execute(new SendMessage(chatId, message));
         } else {
             telegramBot.execute(new SendMessage(chatId, "Нет подходящих приютов"));

@@ -71,46 +71,44 @@ public class MsgHandler {
         if (!buttonEnabled) {
             return;
         }
-        if ("Начнем работу".equals(text)) {
-            processButton(chatId, text);
-            chooseShelter(chatId);
-            disableButtonsTemporarily();
-            return;
-        }
-        if ("Коты".equals(text)) {
-            processButton(chatId, text);
-            getShelterMenuCats(chatId);
-            disableButtonsTemporarily();
-            return;
-        }
-        if ("Собаки".equals(text)) {
-            processButton(chatId, text);
-            getShelterMenuDogs(chatId);
-            disableButtonsTemporarily();
-            return;
-        }
-        if ("Информация о приюте для собак".equals(text)) {
-            processButton(chatId, text);
-            disableButtonsTemporarily();
-            shelterInfoHandler.shelterDogInfo(chatId);//даем инфо по приюту
-            return;//нужно добавить кнопу возврата в предыдущее меню
-        }
-        if ("Информация о приюте для котов".equals(text)) {
-            processButton(chatId, text);
-            disableButtonsTemporarily();
-            shelterInfoHandler.shelterCatInfo(chatId);//даем инфо по приюту
-            return;//нужно добавить кнопу возврата в предыдущее меню
-        }
-        if ("Как взять".equals(text)) {
+        if(text.startsWith("Как взять")){
             disableButtonsTemporarily();
             processButton(chatId, text);
             sendMock(chatId);
             return;
         }
-        if ("Отчет".equals(text)) {
+        if(text.startsWith("Отчет")){
             disableButtonsTemporarily();
             processButton(chatId, text);
             sendMock(chatId);
+            return;
+        }
+        switch (text) {
+            case "Коты":
+                processButton(chatId, text);
+                getShelterMenuCats(chatId);
+                disableButtonsTemporarily();
+                break;
+            case "Собаки":
+                processButton(chatId, text);
+                getShelterMenuDogs(chatId);
+                disableButtonsTemporarily();
+                return;
+            case "Информация о приюте для собак":
+                processButton(chatId, text);
+                disableButtonsTemporarily();
+                shelterInfoHandler.shelterDogInfo(chatId);//даем инфо по приюту
+                return;
+            case "Информация о приюте для котов":
+                processButton(chatId, text);
+                disableButtonsTemporarily();
+                shelterInfoHandler.shelterCatInfo(chatId);//даем инфо по приюту
+                return;
+            default:
+                processButton(chatId, text);
+                chooseShelter(chatId);
+                disableButtonsTemporarily();
+                break;
         }
     }
 

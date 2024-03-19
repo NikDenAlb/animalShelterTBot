@@ -22,9 +22,9 @@ public class ShelterInfoHandler {
     }
 
     public void shelterDogInfo(long chatId) {
-        Optional<Shelter> dog = repository.findByDogs();
-        if (dog.isPresent()) {
-            Shelter shelter = dog.get();
+        Optional<Shelter> dogShelter = repository.findByDogs();
+        if (dogShelter.isPresent()) {
+            Shelter shelter = dogShelter.get();
             String message = "Адрес : " + shelter.getAddress() +
                     "\nКонтактная информация : " + shelter.getContactInfo() +
                     "\nНаименование : " + shelter.getNameOfTheShelter() +
@@ -36,9 +36,9 @@ public class ShelterInfoHandler {
     }
 
     public void shelterCatInfo(long chatId) {
-        Optional<Shelter> cat = repository.findByCats();
-        if (cat.isPresent()) {
-            Shelter shelterCat = cat.get();
+        Optional<Shelter> catShelter = repository.findByCats();
+        if (catShelter.isPresent()) {
+            Shelter shelterCat = catShelter.get();
             String message = "Адрес : " + shelterCat.getAddress() +
                     "\nКонтактная информация : " + shelterCat.getContactInfo() +
                     "\nНаименование : " + shelterCat.getNameOfTheShelter() +

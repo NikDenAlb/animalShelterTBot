@@ -5,8 +5,8 @@ import com.pengrad.telegrambot.TelegramBot;
 import com.pengrad.telegrambot.request.SendMessage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import selfConstructed.animalShelterTBot.model.cat.ShelterCat;
-import selfConstructed.animalShelterTBot.repository.SheltersRepository;
+import selfConstructed.animalShelterTBot.model.Shelter;
+import selfConstructed.animalShelterTBot.repository.ShelterRepository;
 
 import java.util.Optional;
 
@@ -14,17 +14,17 @@ import java.util.Optional;
 public class ShelterInfoHandler {
     private final Logger logger = LoggerFactory.getLogger(ShelterInfoHandler.class);
     private final TelegramBot telegramBot;
-    private SheltersRepository repository;
+    private ShelterRepository repository;
 
-    public ShelterInfoHandler(TelegramBot telegramBot, SheltersRepository repository) {
+    public ShelterInfoHandler(TelegramBot telegramBot, ShelterRepository repository) {
         this.telegramBot = telegramBot;
         this.repository = repository;
     }
 
     public void shelterDogInfo(long chatId) {
-        Optional<SheltersRepository> dog = repository.findByDogs();
+        Optional<Shelter> dog = repository.findByDogs();
         if (dog.isPresent()) {
-            Shelters shelter = dog.get();
+            Shelter shelter = dog.get();
             String message = "Адрес : " + shelter.getAddress() +
                     "\nКонтактная информация : " + shelter.getContactInfo() +
                     "\nНаименование : " + shelter.getNameOfTheShelter() +
@@ -36,9 +36,9 @@ public class ShelterInfoHandler {
     }
 
     public void shelterCatInfo(long chatId) {
-        Optional<SheltersRepository> cat = repository.findByCats();
+        Optional<Shelter> cat = repository.findByCats();
         if (cat.isPresent()) {
-            Shelters shelterCat = cat.get();
+            Shelter shelterCat = cat.get();
             String message = "Адрес : " + shelterCat.getAddress() +
                     "\nКонтактная информация : " + shelterCat.getContactInfo() +
                     "\nНаименование : " + shelterCat.getNameOfTheShelter() +

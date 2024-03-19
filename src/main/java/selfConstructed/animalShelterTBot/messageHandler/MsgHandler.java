@@ -9,39 +9,61 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import selfConstructed.animalShelterTBot.keyboard.Keyboard;
+import selfConstructed.animalShelterTBot.service.ShelterInfoHandler;
+import selfConstructed.animalShelterTBot.service.WelcomeHandler;
 
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 
+/**
+ * Handler for messages from the user and callbacks.
+ */
 @Service
 public class MsgHandler {
 
     private final Logger logger = LoggerFactory.getLogger(MsgHandler.class);
     private final TelegramBot telegramBot;
+    private final ShelterInfoHandler shelterInfoHandler;
+    private final WelcomeHandler welcomeHandler;
     private final Keyboard keyboard;
     private final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
     private final boolean buttonEnabled = true;
 
-    public MsgHandler(TelegramBot telegramBot, Keyboard keyboard) {
+    /**
+     * Constructor for MsgHandler.
+     *
+     * @param telegramBot        TelegramBot object
+     * @param shelterInfoHandler ShelterInfoHandler object
+     * @param welcomeHandler     WelcomeHandler object
+     * @param keyboard           Keyboard object
+     */
+    public MsgHandler(TelegramBot telegramBot, ShelterInfoHandler shelterInfoHandler,
+                      WelcomeHandler welcomeHandler, Keyboard keyboard) {
         this.telegramBot = telegramBot;
+        this.shelterInfoHandler = shelterInfoHandler;
+        this.welcomeHandler = welcomeHandler;
         this.keyboard = keyboard;
     }
 
     /**
-     * processing message from user
+     * Processing a message from the user.
+     *
+     * @param message Message object
      */
     public void handleMessage(Message message) {
         Long chatId = message.chat().id();
         String text = message.text();
         if ("/start".equals(text)) {
-            sendWelcomeMessage(chatId);
+            welcomeHandler.sendWelcomeMessage(chatId);
         }
     }
 
     /**
-     * processing callback from user
+     * Processing a callback from the user.
+     *
+     * @param callbackQuery object CallbackQuery
      */
     public void handleCallBack(CallbackQuery callbackQuery) {
         Long chatId = callbackQuery.from().id();
@@ -57,45 +79,47 @@ public class MsgHandler {
         }
         if ("Коты".equals(text)) {
             processButton(chatId, text);
-            getShelterMenu(chatId);
+            getShelterMenuCats(chatId);
             disableButtonsTemporarily();
             return;
         }
         if ("Собаки".equals(text)) {
             processButton(chatId, text);
-            getShelterMenu(chatId);
+            getShelterMenuDogs(chatId);
             disableButtonsTemporarily();
             return;
         }
-        if ("Информация".equals(text)) {
+        if ("Информация о приюте для собак".equals(text)) {
             processButton(chatId, text);
-            sendMock(chatId);
-            return;
+            disableButtonsTemporarily();
+            shelterInfoHandler.shelterDogInfo(chatId);//даем инфо по приюту
+            return;//нужно добавить кнопу возврата в предыдущее меню
+        }
+        if ("Информация о приюте для котов".equals(text)) {
+            processButton(chatId, text);
+            disableButtonsTemporarily();
+            shelterInfoHandler.shelterCatInfo(chatId);//даем инфо по приюту
+            return;//нужно добавить кнопу возврата в предыдущее меню
         }
         if ("Как взять".equals(text)) {
+            disableButtonsTemporarily();
             processButton(chatId, text);
             sendMock(chatId);
             return;
         }
         if ("Отчет".equals(text)) {
+            disableButtonsTemporarily();
             processButton(chatId, text);
             sendMock(chatId);
         }
     }
 
-    /**
-     * welcome message
-     * added inline keyboard
-     * sending welcome message to user with test button
-     */
-    private void sendWelcomeMessage(long chatId) {
-        String welcomeMessage = "Добро пожаловать! Я бот."
-                + '\n' + "Для начала работы нажми кнопку КНОПКУ";
-        InlineKeyboardMarkup inlineKeyboardMarkup = keyboard.getTestInlineButton();
-        telegramBot.execute(new SendMessage(chatId, welcomeMessage).replyMarkup(inlineKeyboardMarkup));
-        logger.info("Отправлено приветственное сообщение в чат {}: {}", chatId, welcomeMessage);
-    }
 
+    /**
+     * Sends a message with the choice of shelter to the user.
+     *
+     * @param chatId user's chat identifier
+     */
     private void chooseShelter(long chatId) {
         String message = "Выбери нужный приют \uD83D\uDC47";
         InlineKeyboardMarkup inlineKeyboardMarkup = keyboard.getShelter();
@@ -103,9 +127,21 @@ public class MsgHandler {
         logger.info("Отправлено сообщение с выбором приюта в чат {}: {}", chatId, message);
     }
 
-    private void getShelterMenu(long chatId) {
+    /**
+     * Sends a message with the shelter menu to the user.
+     *
+     * @param chatId user's chat identifier
+     */
+    private void getShelterMenuDogs(long chatId) {
         String message = "Ознакомьтесь с меню и выберите нужный пункт";
-        InlineKeyboardMarkup inlineKeyboardMarkup = keyboard.getMenuAboutShelter();
+        InlineKeyboardMarkup inlineKeyboardMarkup = keyboard.getMenuAboutShelterDogs();
+        telegramBot.execute(new SendMessage(chatId, message).replyMarkup(inlineKeyboardMarkup));
+        logger.info("Отправлено сообщение с выбором меню в чат {}: {}", chatId, message);
+    }
+
+    private void getShelterMenuCats(long chatId) {
+        String message = "В следующем меню выберите интересующий вас пункт";
+        InlineKeyboardMarkup inlineKeyboardMarkup = keyboard.getMenuAboutShelterCats();
         telegramBot.execute(new SendMessage(chatId, message).replyMarkup(inlineKeyboardMarkup));
         logger.info("Отправлено сообщение с выбором меню в чат {}: {}", chatId, message);
     }
@@ -115,14 +151,23 @@ public class MsgHandler {
         telegramBot.execute(new SendMessage(chatId, message));
     }
 
+    /**
+     * Handles a button click by the user.
+     *
+     * @param chatId   user's chat identifier
+     * @param callBack callback text
+     */
     private void processButton(long chatId, String callBack) {
         String message = "Вы нажали на кнопку " + callBack;
         telegramBot.execute(new SendMessage(chatId, message));
         logger.info("Пользователь {} нажал на кнопку {}", chatId, callBack);
     }
 
+    /**
+     * Temporarily disables buttons for a specified time.
+     */
     private void disableButtonsTemporarily() {
         AtomicBoolean buttonEnabled = new AtomicBoolean(false);
-        scheduler.schedule(() -> buttonEnabled.set(true), 30, TimeUnit.SECONDS); // Enable buttons after 30 seconds
+        scheduler.schedule(() -> buttonEnabled.set(true), 30, TimeUnit.SECONDS);
     }
 }

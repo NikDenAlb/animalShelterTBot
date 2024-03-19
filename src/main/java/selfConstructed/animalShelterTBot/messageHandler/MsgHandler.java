@@ -9,12 +9,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import selfConstructed.animalShelterTBot.keyboard.Keyboard;
-import selfConstructed.animalShelterTBot.model.cat.ShelterCat;
-import selfConstructed.animalShelterTBot.model.dog.ShelterDog;
-import selfConstructed.animalShelterTBot.repository.ShelterCatRepo;
-import selfConstructed.animalShelterTBot.repository.ShelterDogRepo;
+import selfConstructed.animalShelterTBot.service.ShelterInfoHandler;
+import selfConstructed.animalShelterTBot.service.WelcomeHandler;
 
-import java.util.Optional;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
@@ -28,8 +25,8 @@ public class MsgHandler {
 
     private final Logger logger = LoggerFactory.getLogger(MsgHandler.class);
     private final TelegramBot telegramBot;
-    private final ShelterDogRepo dogRepo;
-    private final ShelterCatRepo catRepo;
+    private final ShelterInfoHandler shelterInfoHandler;
+    private final WelcomeHandler welcomeHandler;
     private final Keyboard keyboard;
     private final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
     private final boolean buttonEnabled = true;
@@ -37,15 +34,16 @@ public class MsgHandler {
     /**
      * Constructor for MsgHandler.
      *
-     * @param telegramBot TelegramBot object
-     * @param dogRepo     DogRepository object
-     * @param catRepo     CatRepository object
-     * @param keyboard    Keyboard object
+     * @param telegramBot        TelegramBot object
+     * @param shelterInfoHandler ShelterInfoHandler object
+     * @param welcomeHandler     WelcomeHandler object
+     * @param keyboard           Keyboard object
      */
-    public MsgHandler(TelegramBot telegramBot, ShelterDogRepo dogRepo, ShelterCatRepo catRepo, Keyboard keyboard) {
+    public MsgHandler(TelegramBot telegramBot, ShelterInfoHandler shelterInfoHandler,
+                      WelcomeHandler welcomeHandler, Keyboard keyboard) {
         this.telegramBot = telegramBot;
-        this.dogRepo = dogRepo;
-        this.catRepo = catRepo;
+        this.shelterInfoHandler = shelterInfoHandler;
+        this.welcomeHandler = welcomeHandler;
         this.keyboard = keyboard;
     }
 
@@ -58,7 +56,7 @@ public class MsgHandler {
         Long chatId = message.chat().id();
         String text = message.text();
         if ("/start".equals(text)) {
-            sendWelcomeMessage(chatId);
+            welcomeHandler.sendWelcomeMessage(chatId);
         }
     }
 
@@ -94,13 +92,13 @@ public class MsgHandler {
         if ("Информация о приюте для собак".equals(text)) {
             processButton(chatId, text);
             disableButtonsTemporarily();
-            shelterDogInfo(chatId);//даем инфо по приюту
+            shelterInfoHandler.shelterDogInfo(chatId);//даем инфо по приюту
             return;//нужно добавить кнопу возврата в предыдущее меню
         }
         if ("Информация о приюте для котов".equals(text)) {
             processButton(chatId, text);
             disableButtonsTemporarily();
-            shelterCatInfo(chatId);//даем инфо по приюту
+            shelterInfoHandler.shelterCatInfo(chatId);//даем инфо по приюту
             return;//нужно добавить кнопу возврата в предыдущее меню
         }
         if ("Как взять".equals(text)) {
@@ -116,18 +114,6 @@ public class MsgHandler {
         }
     }
 
-    /**
-     * Sends a welcome message to the user with a built-in keyboard.
-     *
-     * @param chatId user's chat identifier
-     */
-    private void sendWelcomeMessage(long chatId) {
-        String welcomeMessage = "Добро пожаловать! Я бот."
-                + '\n' + "Для начала работы нажми кнопку КНОПКУ";
-        InlineKeyboardMarkup inlineKeyboardMarkup = keyboard.getTestInlineButton();
-        telegramBot.execute(new SendMessage(chatId, welcomeMessage).replyMarkup(inlineKeyboardMarkup));
-        logger.info("Отправлено приветственное сообщение в чат {}: {}", chatId, welcomeMessage);
-    }
 
     /**
      * Sends a message with the choice of shelter to the user.
@@ -183,33 +169,5 @@ public class MsgHandler {
     private void disableButtonsTemporarily() {
         AtomicBoolean buttonEnabled = new AtomicBoolean(false);
         scheduler.schedule(() -> buttonEnabled.set(true), 30, TimeUnit.SECONDS);
-    }
-
-    private void shelterDogInfo(long chatId) {
-        Optional<ShelterDog> dog = dogRepo.findById("1");
-        if (dog.isPresent()) {
-            ShelterDog shelterDog = dog.get();
-            String message = "Адрес : " + shelterDog.getAddress() +
-                    "\nКонтактная информация : " + shelterDog.getContactInfo() +
-                    "\nНаименование : " + shelterDog.getNameOfTheShelter() +
-                    "\nВремя работы: " + shelterDog.getOpeningHours();
-            telegramBot.execute(new SendMessage(chatId, message));
-        } else {
-            telegramBot.execute(new SendMessage(chatId, "Нет подходящих приютов"));
-        }
-    }
-
-    private void shelterCatInfo(long chatId) {
-        Optional<ShelterCat> cat = catRepo.findById("1");
-        if (cat.isPresent()) {
-            ShelterCat shelterCat = cat.get();
-            String message = "Адрес : " + shelterCat.getAddress() +
-                    "\nКонтактная информация : " + shelterCat.getContactInfo() +
-                    "\nНаименование : " + shelterCat.getNameOfTheShelter() +
-                    "\nВремя работы: " + shelterCat.getOpeningHours();
-            telegramBot.execute(new SendMessage(chatId, message));
-        } else {
-            telegramBot.execute(new SendMessage(chatId, "Нет подходящих приютов"));
-        }
     }
 }

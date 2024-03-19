@@ -1,56 +1,23 @@
 -- liquibase formatted sql
 
 -- changeset ihlopachev:1
-CREATE TABLE cat_report
+CREATE TABLE reports
 (
     id                  BIGSERIAL PRIMARY KEY,
     photo               TEXT,
-    cat_diet            TEXT,
+    diet                TEXT,
     change_in_behavior  TEXT,
     general_information TEXT
 );
-CREATE TABLE cats
-(
-    id             BIGSERIAL PRIMARY KEY,
-    name_cat       TEXT   NOT NULL,
-    adult          BIGINT NOT NULL,
-    breed          TEXT   NOT NULL,
-    shelter_cat_id BIGINT NOT NULL
-);
-CREATE TABLE shelters_cat
-(
-    id                  BIGSERIAL PRIMARY KEY,
-    name_of_the_shelter TEXT NOT NULL,
-    address             TEXT NOT NULL,
-    opening_hours       TEXT NOT NULL,
-    contact_info        TEXT NOT NULL
-);
-CREATE TABLE users_cat
-(
-    id           BIGSERIAL PRIMARY KEY,
-    chat_id      BIGINT NOT NULL,
-    full_name    TEXT   NOT NULL,
-    adult        BIGINT,
-    address      TEXT   NOT NULL,
-    phone_number TEXT   NOT NULL,
-    is_adopted    BOOLEAN DEFAULT false
-);
-CREATE TABLE dog_report
-(
-    id                  BIGSERIAL PRIMARY KEY,
-    photo               TEXT,
-    dog_diet            TEXT,
-    change_in_behavior  TEXT,
-    general_information TEXT
-);
-CREATE TABLE dogs
+CREATE TABLE pets
 (
     id       BIGSERIAL PRIMARY KEY,
-    name_dog TEXT   NOT NULL,
+    name_Pet TEXT   NOT NULL,
+    type_Pet TEXT   NOT NULL,
     adult    BIGINT NOT NULL,
     breed    TEXT   NOT NULL
 );
-CREATE TABLE shelters_dog
+CREATE TABLE shelters
 (
     id                  BIGSERIAL PRIMARY KEY,
     name_of_the_shelter TEXT NOT NULL,
@@ -58,15 +25,15 @@ CREATE TABLE shelters_dog
     opening_hours       TEXT NOT NULL,
     contact_info        TEXT NOT NULL
 );
-CREATE TABLE users_dog
+CREATE TABLE users
 (
     id           BIGSERIAL PRIMARY KEY,
     chat_id      BIGINT NOT NULL,
-    full_name    TEXT   NOT NULL,
+    full_name    TEXT  ,
     adult        BIGINT,
-    address      TEXT   NOT NULL,
-    phone_number TEXT   NOT NULL,
-    is_adopted    BOOLEAN DEFAULT false
+    address      TEXT   ,
+    phone_number TEXT   ,
+    is_adopted   BIGINT 
 );
 -- changeset nikdenalb:2
 CREATE TABLE Bot0messages

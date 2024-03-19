@@ -1,7 +1,8 @@
-package selfConstructed.animalShelterTBot.model.dog;
+package selfConstructed.animalShelterTBot.model;
 
 import jakarta.persistence.*;
 import lombok.*;
+import selfConstructed.animalShelterTBot.model.Pet;
 
 import java.util.Set;
 
@@ -11,15 +12,16 @@ import java.util.Set;
 @EqualsAndHashCode
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "shelters_dog")
-public class ShelterDog {
+@Table(name = "shelters")
+public class Shelter {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String nameOfTheShelter;
+    private Long type_animal;
     private String address;
     private String openingHours;
     private String contactInfo;
-    @OneToMany(mappedBy = "shelterDog")
-    private Set<Dog> dogs;
+    @OneToMany(mappedBy = "shelter")
+    private Set<Pet> pets;
 }

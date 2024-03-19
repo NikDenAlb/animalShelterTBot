@@ -20,7 +20,7 @@ public class User {
     private Long adult;
     private String address;
     private String phoneNumber;
-    private Long isAdopted;
+    private Long statusAdopted;
     @OneToOne
     @JoinColumn(name = "pet_id")
     private Pet pet;

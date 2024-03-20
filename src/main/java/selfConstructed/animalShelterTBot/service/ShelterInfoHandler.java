@@ -39,8 +39,22 @@ public class ShelterInfoHandler {
      */
     public void shelterDogInfo(long chatId) {
         Optional<Shelter> dogShelter = repository.findByDogs();
-        if (dogShelter.isPresent()) {
-            Shelter shelter = dogShelter.get();
+        getInfoAboutShelter(chatId, dogShelter);
+    }
+
+    /**
+     * Sends information about cat shelters to the specified chat ID.
+     *
+     * @param chatId The ID of the chat where the information should be sent.
+     */
+    public void shelterCatInfo(long chatId) {
+        Optional<Shelter> catShelter = repository.findByCats();
+        getInfoAboutShelter(chatId, catShelter);
+    }
+
+    private void getInfoAboutShelter(long chatId, Optional<Shelter> animalShelter) {
+        if (animalShelter.isPresent()) {
+            Shelter shelter = animalShelter.get();
             String message = "Адрес : " + shelter.getAddress() +
                     "\nКонтактная информация : " + shelter.getContactInfo() +
                     "\nНаименование : " + shelter.getNameOfTheShelter() +
@@ -51,27 +65,7 @@ public class ShelterInfoHandler {
             telegramBot.execute(new SendMessage(chatId, "Нет подходящих приютов"));
             logger.info("Отправлено сообщение в чат: {}, Нет подходящих приютов", chatId);
         }
-
     }
 
-    /**
-     * Sends information about cat shelters to the specified chat ID.
-     *
-     * @param chatId The ID of the chat where the information should be sent.
-     */
-    public void shelterCatInfo(long chatId) {
-        Optional<Shelter> catShelter = repository.findByCats();
-        if (catShelter.isPresent()) {
-            Shelter shelterCat = catShelter.get();
-            String message = "Адрес : " + shelterCat.getAddress() +
-                    "\nКонтактная информация : " + shelterCat.getContactInfo() +
-                    "\nНаименование : " + shelterCat.getNameOfTheShelter() +
-                    "\nВремя работы: " + shelterCat.getOpeningHours();
-            telegramBot.execute(new SendMessage(chatId, message));
-            logger.info("Отправлено сообщение в чат: {}, {}", chatId, message);
-        } else {
-            telegramBot.execute(new SendMessage(chatId, "Нет подходящих приютов"));
-            logger.info("Отправлено сообщение в чат: {}, Нет подходящих приютов", chatId);
-        }
-    }
+
 }

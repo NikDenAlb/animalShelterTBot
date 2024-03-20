@@ -46,9 +46,12 @@ public class ShelterInfoHandler {
                     "\nНаименование : " + shelter.getNameOfTheShelter() +
                     "\nВремя работы: " + shelter.getOpeningHours();
             telegramBot.execute(new SendMessage(chatId, message));
+            logger.info("Отправлено сообщение в чат: {}, {}", chatId, message);
         } else {
             telegramBot.execute(new SendMessage(chatId, "Нет подходящих приютов"));
+            logger.info("Отправлено сообщение в чат: {}, Нет подходящих приютов", chatId);
         }
+
     }
 
     /**
@@ -65,8 +68,10 @@ public class ShelterInfoHandler {
                     "\nНаименование : " + shelterCat.getNameOfTheShelter() +
                     "\nВремя работы: " + shelterCat.getOpeningHours();
             telegramBot.execute(new SendMessage(chatId, message));
+            logger.info("Отправлено сообщение в чат: {}, {}", chatId, message);
         } else {
             telegramBot.execute(new SendMessage(chatId, "Нет подходящих приютов"));
+            logger.info("Отправлено сообщение в чат: {}, Нет подходящих приютов", chatId);
         }
     }
 }

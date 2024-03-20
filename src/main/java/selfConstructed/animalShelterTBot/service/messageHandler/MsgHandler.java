@@ -96,7 +96,7 @@ public class MsgHandler {
                 shelterInfoHandler.shelterCatInfo(chatId);
             }//даем инфо по приюту
             case "Как взять собаку", "Как взять кота",
-                    "Отчет о собаке", "Отчет о коте" -> {
+                    "Отчет о собаке", "Отчет о коте", "Назад" -> {
                 processButton(chatId, text);
                 disableButtonsTemporarily();
                 sendMock(chatId);

@@ -33,7 +33,7 @@ public class WelcomeHandlerTest {
 
         //поведение клавиатуры - когда класс киборд вызывает метод гетТестКиборд,
         //то возвращает новый объект инлайнкиборд
-        when(keyboard.getTestInlineButton()).thenReturn(inlineKeyboardMarkup);
+        when(keyboard.getStartInlineButton()).thenReturn(inlineKeyboardMarkup);
 
         welcomeHandler.sendWelcomeMessage(chatId);
 

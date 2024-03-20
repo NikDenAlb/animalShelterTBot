@@ -12,28 +12,29 @@ CREATE TABLE reports
 CREATE TABLE pets
 (
     id       BIGSERIAL PRIMARY KEY,
-    name_Pet TEXT   NOT NULL,
-    type_Pet TEXT   NOT NULL,
+    name_pet TEXT   NOT NULL,
+    type_pet TEXT   NOT NULL,
     adult    BIGINT NOT NULL,
     breed    TEXT   NOT NULL
 );
 CREATE TABLE shelters
 (
     id                  BIGSERIAL PRIMARY KEY,
-    name_of_the_shelter TEXT NOT NULL,
-    address             TEXT NOT NULL,
-    opening_hours       TEXT NOT NULL,
-    contact_info        TEXT NOT NULL
+    name_of_the_shelter TEXT   NOT NULL,
+    type_animal            BIGINT NOT NULL,
+    address             TEXT   NOT NULL,
+    opening_hours       TEXT   NOT NULL,
+    contact_info        TEXT   NOT NULL
 );
 CREATE TABLE users
 (
     id           BIGSERIAL PRIMARY KEY,
     chat_id      BIGINT NOT NULL,
-    full_name    TEXT  ,
+    full_name    TEXT,
     adult        BIGINT,
-    address      TEXT   ,
-    phone_number TEXT   ,
-    is_adopted   BIGINT 
+    address      TEXT,
+    phone_number TEXT,
+    is_adopted   BIGINT
 );
 -- changeset nikdenalb:2
 CREATE TABLE Bot0messages

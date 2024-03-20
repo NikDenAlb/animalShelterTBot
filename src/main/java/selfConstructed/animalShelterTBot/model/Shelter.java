@@ -18,7 +18,7 @@ public class Shelter {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String nameOfTheShelter;
-    private Long type_animal;
+    private Long typePet;
     private String address;
     private String openingHours;
     private String contactInfo;

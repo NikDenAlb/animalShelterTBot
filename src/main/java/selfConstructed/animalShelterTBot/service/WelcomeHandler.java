@@ -8,6 +8,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import selfConstructed.animalShelterTBot.keyboard.Keyboard;
 
+/**
+ * @author shinkevich
+ */
 @Service
 public class WelcomeHandler {
     private final Logger logger = LoggerFactory.getLogger(WelcomeHandler.class);

@@ -1,4 +1,4 @@
-package selfConstructed.animalShelterTBot.messageHandler;
+package selfConstructed.animalShelterTBot.service.messageHandler;
 
 import com.pengrad.telegrambot.TelegramBot;
 import com.pengrad.telegrambot.model.CallbackQuery;
@@ -19,6 +19,8 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
  * Handler for messages from the user and callbacks.
+ *
+ * @author shinkevich
  */
 @Service
 public class MsgHandler {
@@ -71,44 +73,39 @@ public class MsgHandler {
         if (!buttonEnabled) {
             return;
         }
-        if(text.startsWith("Как взять")){
-            disableButtonsTemporarily();
-            processButton(chatId, text);
-            sendMock(chatId);
-            return;
-        }
-        if(text.startsWith("Отчет")){
-            disableButtonsTemporarily();
-            processButton(chatId, text);
-            sendMock(chatId);
-            return;
-        }
         switch (text) {
-            case "Коты":
+            case "Коты" -> {
                 processButton(chatId, text);
+                disableButtonsTemporarily();
                 getShelterMenuCats(chatId);
-                disableButtonsTemporarily();
-                break;
-            case "Собаки":
+            }
+            case "Собаки" -> {
                 processButton(chatId, text);
+                disableButtonsTemporarily();
                 getShelterMenuDogs(chatId);
-                disableButtonsTemporarily();
-                return;
-            case "Информация о приюте для собак":
+            }
+            case "Информация о приюте для собак" -> {
                 processButton(chatId, text);
                 disableButtonsTemporarily();
-                shelterInfoHandler.shelterDogInfo(chatId);//даем инфо по приюту
-                return;
-            case "Информация о приюте для котов":
+                shelterInfoHandler.shelterDogInfo(chatId);
+            }//даем инфо по приюту
+
+            case "Информация о приюте для котов" -> {
                 processButton(chatId, text);
                 disableButtonsTemporarily();
-                shelterInfoHandler.shelterCatInfo(chatId);//даем инфо по приюту
-                return;
-            default:
+                shelterInfoHandler.shelterCatInfo(chatId);
+            }//даем инфо по приюту
+            case "Как взять собаку", "Как взять кота",
+                    "Отчет о собаке", "Отчет о коте" -> {
                 processButton(chatId, text);
+                disableButtonsTemporarily();
+                sendMock(chatId);
+            }
+            default -> {
+                processButton(chatId, text);
+                disableButtonsTemporarily();
                 chooseShelter(chatId);
-                disableButtonsTemporarily();
-                break;
+            }
         }
     }
 
@@ -126,17 +123,22 @@ public class MsgHandler {
     }
 
     /**
-     * Sends a message with the shelter menu to the user.
+     * Sends a menu for selecting options related to shelter dogs to the specified chat ID.
      *
-     * @param chatId user's chat identifier
+     * @param chatId The ID of the chat where the menu should be sent.
      */
     private void getShelterMenuDogs(long chatId) {
-        String message = "Ознакомьтесь с меню и выберите нужный пункт";
+        String message = "В следующем меню выберите интересующий вас пункт";
         InlineKeyboardMarkup inlineKeyboardMarkup = keyboard.getMenuAboutShelterDogs();
         telegramBot.execute(new SendMessage(chatId, message).replyMarkup(inlineKeyboardMarkup));
         logger.info("Отправлено сообщение с выбором меню в чат {}: {}", chatId, message);
     }
 
+    /**
+     * Sends a menu for selecting options related to shelter cats to the specified chat ID.
+     *
+     * @param chatId The ID of the chat where the menu should be sent.
+     */
     private void getShelterMenuCats(long chatId) {
         String message = "В следующем меню выберите интересующий вас пункт";
         InlineKeyboardMarkup inlineKeyboardMarkup = keyboard.getMenuAboutShelterCats();
@@ -144,6 +146,7 @@ public class MsgHandler {
         logger.info("Отправлено сообщение с выбором меню в чат {}: {}", chatId, message);
     }
 
+    //этот метод нужно будет удалить когда все приложение будет работать
     private void sendMock(long chatId) {
         String message = "\uD83D\uDED1Ведутся ремонтные работы\uD83D\uDED1";
         telegramBot.execute(new SendMessage(chatId, message));

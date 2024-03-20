@@ -7,6 +7,8 @@ import org.springframework.stereotype.Component;
 /**
  * A class representing a keyboard for a Telegram bot.
  * Contains methods for creating different types of keyboards.
+ *
+ * @author shinkevich
  */
 @Component
 public class Keyboard {
@@ -36,7 +38,7 @@ public class Keyboard {
     }
 
     /**
-     * Creates a menu with buttons for getting shelter information, adopting an animal,
+     * Creates a menu with buttons for getting shelter for DOGS information, adopting an animal,
      * and submitting a pet report.
      *
      * @return InlineKeyboardMarkup object with buttons for the menu
@@ -48,13 +50,19 @@ public class Keyboard {
         InlineKeyboardButton button2 = new InlineKeyboardButton("Как взять животное")
                 .callbackData("Как взять собаку");
         InlineKeyboardButton button3 = new InlineKeyboardButton("Прислать отчет о питомце")
-                .callbackData("Отчет собак");
+                .callbackData("Отчет о собаке");
         inlineKeyboardMarkup.addRow(button1);
         inlineKeyboardMarkup.addRow(button2);
         inlineKeyboardMarkup.addRow(button3);
         return inlineKeyboardMarkup;
     }
 
+    /**
+     * Creates a menu with buttons for getting shelter for CATS information, adopting an animal,
+     * and submitting a pet report.
+     *
+     * @return InlineKeyboardMarkup object with buttons for the menu
+     */
     public InlineKeyboardMarkup getMenuAboutShelterCats() {
         InlineKeyboardMarkup inlineKeyboardMarkup = new InlineKeyboardMarkup();
         InlineKeyboardButton button1 = new InlineKeyboardButton("Узнать информацию о приюте для котов")
@@ -62,7 +70,7 @@ public class Keyboard {
         InlineKeyboardButton button2 = new InlineKeyboardButton("Как взять животное")
                 .callbackData("Как взять кота");
         InlineKeyboardButton button3 = new InlineKeyboardButton("Прислать отчет о питомце")
-                .callbackData("Отчет кот");
+                .callbackData("Отчет о коте");
         inlineKeyboardMarkup.addRow(button1);
         inlineKeyboardMarkup.addRow(button2);
         inlineKeyboardMarkup.addRow(button3);

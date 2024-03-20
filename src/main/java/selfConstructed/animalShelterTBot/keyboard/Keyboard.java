@@ -17,23 +17,26 @@ public class Keyboard {
      *
      * @return InlineKeyboardMarkup object with the "Начнем работу" button
      */
-    public InlineKeyboardMarkup getTestInlineButton() {
+    public InlineKeyboardMarkup getStartInlineButton() {
         InlineKeyboardMarkup inlineKeyboardMarkup = new InlineKeyboardMarkup();
-        InlineKeyboardButton button1 = new InlineKeyboardButton("Начнем работу").callbackData("Начнем работу");
+        InlineKeyboardButton button1 = new InlineKeyboardButton("Начнем работу ▶").callbackData("Начнем работу");
         inlineKeyboardMarkup.addRow(button1);
         return inlineKeyboardMarkup;
     }
 
     /**
-     * Creates a keyboard with two buttons "Cats" and "Dogs".
+     * Creates a keyboard with three buttons "Cats" and "Dogs" and "Back".
      *
-     * @return InlineKeyboardMarkup object with the "Cats" and "Dogs" buttons
+     * @return InlineKeyboardMarkup object with the "Cats" and "Dogs" and "Back" buttons
      */
     public InlineKeyboardMarkup getShelter() {
         InlineKeyboardMarkup inlineKeyboardMarkup = new InlineKeyboardMarkup();
-        InlineKeyboardButton button1 = new InlineKeyboardButton("Коты").callbackData("Коты");
-        InlineKeyboardButton button2 = new InlineKeyboardButton("Собаки").callbackData("Собаки");
+        InlineKeyboardButton button1 = new InlineKeyboardButton("Коты \uD83D\uDC08").callbackData("Коты");
+        InlineKeyboardButton button2 = new InlineKeyboardButton("Собаки \uD83D\uDC15").callbackData("Собаки");
+        InlineKeyboardButton button3 = new InlineKeyboardButton("Вернуться в предыдущее меню ↩")
+                .callbackData("Назад");
         inlineKeyboardMarkup.addRow(button1, button2);
+        inlineKeyboardMarkup.addRow(button3);
         return inlineKeyboardMarkup;
     }
 
@@ -45,15 +48,18 @@ public class Keyboard {
      */
     public InlineKeyboardMarkup getMenuAboutShelterDogs() {
         InlineKeyboardMarkup inlineKeyboardMarkup = new InlineKeyboardMarkup();
-        InlineKeyboardButton button1 = new InlineKeyboardButton("Узнать информацию о приюте для собак")
+        InlineKeyboardButton button1 = new InlineKeyboardButton("\uD83D\uDEC8 Узнать информацию о приюте для собак \uD83D\uDEC8")
                 .callbackData("Информация о приюте для собак");
-        InlineKeyboardButton button2 = new InlineKeyboardButton("Как взять животное")
+        InlineKeyboardButton button2 = new InlineKeyboardButton("⁉ Как взять животное ⁉")
                 .callbackData("Как взять собаку");
-        InlineKeyboardButton button3 = new InlineKeyboardButton("Прислать отчет о питомце")
+        InlineKeyboardButton button3 = new InlineKeyboardButton("Прислать отчет о питомце \uD83D\uDCCB")
                 .callbackData("Отчет о собаке");
+        InlineKeyboardButton button4 = new InlineKeyboardButton("Вернуться в предыдущее меню ↩")
+                .callbackData("Назад");
         inlineKeyboardMarkup.addRow(button1);
         inlineKeyboardMarkup.addRow(button2);
         inlineKeyboardMarkup.addRow(button3);
+        inlineKeyboardMarkup.addRow(button4);
         return inlineKeyboardMarkup;
     }
 
@@ -65,15 +71,18 @@ public class Keyboard {
      */
     public InlineKeyboardMarkup getMenuAboutShelterCats() {
         InlineKeyboardMarkup inlineKeyboardMarkup = new InlineKeyboardMarkup();
-        InlineKeyboardButton button1 = new InlineKeyboardButton("Узнать информацию о приюте для котов")
+        InlineKeyboardButton button1 = new InlineKeyboardButton("\uD83D\uDEC8 Узнать информацию о приюте для котов \uD83D\uDEC8")
                 .callbackData("Информация о приюте для котов");
-        InlineKeyboardButton button2 = new InlineKeyboardButton("Как взять животное")
+        InlineKeyboardButton button2 = new InlineKeyboardButton("⁉ Как взять животное ⁉")
                 .callbackData("Как взять кота");
-        InlineKeyboardButton button3 = new InlineKeyboardButton("Прислать отчет о питомце")
+        InlineKeyboardButton button3 = new InlineKeyboardButton("Прислать отчет о питомце \uD83D\uDCCB")
                 .callbackData("Отчет о коте");
+        InlineKeyboardButton button4 = new InlineKeyboardButton("Вернуться в предыдущее меню ↩")
+                .callbackData("Назад");
         inlineKeyboardMarkup.addRow(button1);
         inlineKeyboardMarkup.addRow(button2);
         inlineKeyboardMarkup.addRow(button3);
+        inlineKeyboardMarkup.addRow(button4);
         return inlineKeyboardMarkup;
     }
 }

@@ -10,17 +10,33 @@ import selfConstructed.animalShelterTBot.repository.ShelterRepository;
 
 import java.util.Optional;
 
+/**
+ * Handles requests related to shelter information for dogs and cats.
+ *
+ * @author shinkevich
+ */
 @Service
 public class ShelterInfoHandler {
     private final Logger logger = LoggerFactory.getLogger(ShelterInfoHandler.class);
     private final TelegramBot telegramBot;
     private ShelterRepository repository;
 
+    /**
+     * Constructs a ShelterInfoHandler with the specified TelegramBot and ShelterRepository.
+     *
+     * @param telegramBot The TelegramBot instance used to send messages.
+     * @param repository  The repository for accessing shelter information.
+     */
     public ShelterInfoHandler(TelegramBot telegramBot, ShelterRepository repository) {
         this.telegramBot = telegramBot;
         this.repository = repository;
     }
 
+    /**
+     * Sends information about dog shelters to the specified chat ID.
+     *
+     * @param chatId The ID of the chat where the information should be sent.
+     */
     public void shelterDogInfo(long chatId) {
         Optional<Shelter> dogShelter = repository.findByDogs();
         if (dogShelter.isPresent()) {
@@ -35,6 +51,11 @@ public class ShelterInfoHandler {
         }
     }
 
+    /**
+     * Sends information about cat shelters to the specified chat ID.
+     *
+     * @param chatId The ID of the chat where the information should be sent.
+     */
     public void shelterCatInfo(long chatId) {
         Optional<Shelter> catShelter = repository.findByCats();
         if (catShelter.isPresent()) {

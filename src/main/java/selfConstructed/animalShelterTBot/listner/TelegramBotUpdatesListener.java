@@ -9,7 +9,7 @@ import jakarta.annotation.PostConstruct;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
-import selfConstructed.animalShelterTBot.messageHandler.MsgHandler;
+import selfConstructed.animalShelterTBot.service.messageHandler.MsgHandler;
 
 import java.util.List;
 

@@ -31,7 +31,8 @@ public class WelcomeHandler {
         String welcomeMessage = "Добро пожаловать! Я бот."
                 + '\n' + "Для начала работы нажми кнопку КНОПКУ";
         InlineKeyboardMarkup inlineKeyboardMarkup = keyboard.getStartInlineButton();
-        telegramBot.execute(new SendMessage(chatId, welcomeMessage).replyMarkup(inlineKeyboardMarkup));
+        SendMessage sendMessage = new SendMessage(chatId, welcomeMessage);
+        telegramBot.execute(sendMessage.replyMarkup(inlineKeyboardMarkup));
         logger.info("Отправлено приветственное сообщение в чат {}: {}", chatId, welcomeMessage);
     }
 }

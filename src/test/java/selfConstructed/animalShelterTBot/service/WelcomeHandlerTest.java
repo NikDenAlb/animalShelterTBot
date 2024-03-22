@@ -6,10 +6,13 @@ import com.pengrad.telegrambot.request.SendMessage;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.ArgumentCaptor;
+import org.mockito.Captor;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import selfConstructed.animalShelterTBot.keyboard.Keyboard;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
@@ -19,6 +22,8 @@ public class WelcomeHandlerTest {
     @Mock
     private Keyboard keyboard;
     private WelcomeHandler welcomeHandler;
+    @Captor
+    ArgumentCaptor<SendMessage> sendMessageCaptor;//создаем капчу для аргумента передаваемого в метод
 
     @BeforeEach
     public void setUp() {
@@ -37,8 +42,11 @@ public class WelcomeHandlerTest {
 
         welcomeHandler.sendWelcomeMessage(chatId);
 
-        verify(telegramBot, times(1)).execute(any(SendMessage.class));
+        verify(telegramBot, times(1)).execute(sendMessageCaptor.capture());
 
+        SendMessage sendMessage = sendMessageCaptor.getValue();
+
+        assertThat(sendMessage.getClass()).isEqualTo(SendMessage.class);
     }
 }
 

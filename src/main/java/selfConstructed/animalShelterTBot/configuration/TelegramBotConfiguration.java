@@ -1,7 +1,6 @@
 package selfConstructed.animalShelterTBot.configuration;
 
 import com.pengrad.telegrambot.TelegramBot;
-import com.pengrad.telegrambot.model.DeleteMyCommands;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -18,6 +17,7 @@ public class TelegramBotConfiguration {
 
     @Bean
     public TelegramBot telegramBot() {
+        logger.info("Создан объект телеграмбота");
         return new TelegramBot(token);
     }
 }

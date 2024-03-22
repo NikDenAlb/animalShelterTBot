@@ -31,7 +31,6 @@ public class MsgHandler {
     private final WelcomeHandler welcomeHandler;
     private final Keyboard keyboard;
     private final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
-    private final boolean buttonEnabled = true;
 
     /**
      * Constructor for MsgHandler.
@@ -70,6 +69,7 @@ public class MsgHandler {
     public void handleCallBack(CallbackQuery callbackQuery) {
         Long chatId = callbackQuery.from().id();
         String text = callbackQuery.data();
+        boolean buttonEnabled = true;
         if (!buttonEnabled) {
             return;
         }

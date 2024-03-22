@@ -5,7 +5,6 @@ import com.pengrad.telegrambot.request.SendMessage;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import selfConstructed.animalShelterTBot.model.Pet;
@@ -23,7 +22,9 @@ public class ShelterInfoHandlerTest {
     private TelegramBot telegramBot;
     @Mock
     private ShelterRepository repository;
+
     private ShelterInfoHandler shelterInfoHandler;
+
 
     @BeforeEach
     public void setUp() {
@@ -32,7 +33,7 @@ public class ShelterInfoHandlerTest {
 
     @Test
     public void whenShelterDogInfoIsCalled_thenMessageIsSentTest() {
-        Long chatId = 123456L;
+        long chatId = 123456L;
         Shelter dogShelter = new Shelter(1L, "Dog", 2L, "Address",
                 "Time", "Contact", Set.of(new Pet()));
 
@@ -43,8 +44,6 @@ public class ShelterInfoHandlerTest {
         shelterInfoHandler.shelterDogInfo(chatId);
 
         verify(telegramBot, times(1)).execute(any(SendMessage.class));
-
-
     }
 
     @Test

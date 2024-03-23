@@ -16,10 +16,10 @@ CREATE TABLE IF NOT EXISTS reports
 CREATE TABLE IF NOT EXISTS pets
 (
     id       BIGSERIAL PRIMARY KEY,
-    name_pet TEXT   NOT NULL,
+    name_pet TEXT     NOT NULL,
     pet_type type_pet NOT NULL,
-    adult    BIGINT NOT NULL,
-    breed    TEXT   NOT NULL
+    adult    BIGINT   NOT NULL,
+    breed    TEXT     NOT NULL
 );
 CREATE TABLE IF NOT EXISTS shelters
 (
@@ -32,8 +32,8 @@ CREATE TABLE IF NOT EXISTS shelters
 CREATE TABLE IF NOT EXISTS users
 (
     id           BIGSERIAL PRIMARY KEY,
-    chat_id   BIGINT    NOT NULL,
-    user_type type_user NOT NULL,
+    chat_id      BIGINT    NOT NULL,
+    user_type    type_user NOT NULL,
     full_name    TEXT,
     adult        BIGINT,
     address      TEXT,

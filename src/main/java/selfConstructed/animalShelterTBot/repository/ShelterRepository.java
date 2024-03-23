@@ -11,9 +11,9 @@ import java.util.Optional;
  * @author hlopachev, shinkevich
  */
 public interface ShelterRepository extends JpaRepository<Shelter,String> {
-    @Query(value = "SELECT s FROM Shelter s where s.type_animal = 2")
+    @Query(value = "SELECT s FROM Shelter s where s.typeAnimal = 2")
     Optional<Shelter> findByDogs();
 
-    @Query(value = "SELECT s FROM Shelter s where s.type_animal = 1")
+    @Query(value = "SELECT s FROM Shelter s where s.typeAnimal = 1")
     Optional<Shelter> findByCats();
 }

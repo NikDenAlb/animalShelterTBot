@@ -24,17 +24,23 @@ public class ShelterService {
         return shelterRepository.findAll();
     }
 
-    public Optional<Shelter> editMessage(Shelter shelter) {
-        if (shelterRepository.findById(String.valueOf(shelter.getId())).isPresent()) {
-            return Optional.of(shelterRepository.save(shelter));
+    public Optional<Shelter> editShelterName(String id, String shelterName) {
+        if (shelterRepository.findById(id).isPresent()) {
+            Shelter newShelter = shelterRepository.findById(id).get();
+            newShelter.setNameOfTheShelter(shelterName);
+            return Optional.of(shelterRepository.save(newShelter));
         }
         return Optional.empty();
     }
+
+    /**
+     * Put 2 standard shelters into DB if DB is empty
+     */
     @PostConstruct
     void init() {
         if (shelterRepository.findAll().isEmpty()) {
-            shelterRepository.save(new Shelter(1L, "Кошки?", 1L, "КукуевоК", "4-5", "Звоните нам",null));
-            shelterRepository.save(new Shelter(2L, "Собаки?", 2L, "КукуевоС", "5-6", "Пишите нам",null));
+            shelterRepository.save(new Shelter(1L, "Кошкин Дом", 1L, "Кукуево", "6:00-18:00", "Звоните нам",null));
+            shelterRepository.save(new Shelter(2L, "Будка Шарика", 2L, "Кукуевка", "9:00-21:00", "Пишите нам",null));
         }
 
     }

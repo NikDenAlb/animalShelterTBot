@@ -1,5 +1,6 @@
 {
   "Address": "Адрес ",
-  "Message2": "2",
-  "Message3": "3"
+  "ContactInformation": "\nКонтактная информация : ",
+  "Naming": "\nНаименование : ",
+  "TimeWork": "\nВремя работы: "
 }

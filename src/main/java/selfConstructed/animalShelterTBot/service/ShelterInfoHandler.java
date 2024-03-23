@@ -57,10 +57,10 @@ public class ShelterInfoHandler {
     private void getInfoAboutShelter(long chatId, Optional<Shelter> animalShelter) {
         if (animalShelter.isPresent()) {
             Shelter shelter = animalShelter.get();
-            String message = textsService.getTextOrDefault("Address", "Добавить заглушку") + shelter.getAddress() +
-                    "\nКонтактная информация : " + shelter.getContactInfo() +
-                    "\nНаименование : " + shelter.getNameOfTheShelter() +
-                    "\nВремя работы: " + shelter.getOpeningHours();
+            String message = textsService.getTextOrDefault("Address", "get key") + shelter.getAddress() +
+                    textsService.getTextOrDefault("ContactInformation", "get key") + shelter.getContactInfo() +
+                    textsService.getTextOrDefault("Naming", "get key") + shelter.getNameOfTheShelter() +
+                    textsService.getTextOrDefault("TimeWork", "get key") + shelter.getOpeningHours();
             telegramBot.execute(new SendMessage(chatId, message));
             logger.info("Отправлено сообщение в чат: {}, {}", chatId, message);
         } else {

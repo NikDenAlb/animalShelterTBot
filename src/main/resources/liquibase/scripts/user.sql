@@ -35,9 +35,3 @@ CREATE TABLE users
     phone_number TEXT   ,
     is_adopted   BIGINT 
 );
--- changeset nikdenalb:2
-CREATE TABLE Bot0messages
-(
-    message_type TEXT PRIMARY KEY,
-    message_text TEXT
-);

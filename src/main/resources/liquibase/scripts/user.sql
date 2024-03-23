@@ -1,8 +1,10 @@
 -- liquibase formatted sql
 
 -- changeset ihlopachev:1
-CREATE TYPE IF NOT EXISTS type_pet AS enum ('cat', 'dog');
-CREATE TYPE IF NOT EXISTS type_user AS enum ('user', 'volunteer');
+DROP TYPE IF EXISTS type_pet;
+DROP TYPE IF EXISTS type_user;
+CREATE TYPE type_pet AS enum ('cat', 'dog');
+CREATE TYPE type_user AS enum ('user', 'volunteer');
 CREATE TABLE IF NOT EXISTS reports
 (
     id                  BIGSERIAL PRIMARY KEY,

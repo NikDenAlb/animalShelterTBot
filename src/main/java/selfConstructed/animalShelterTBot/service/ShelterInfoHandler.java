@@ -1,10 +1,10 @@
 package selfConstructed.animalShelterTBot.service;
 
-import org.springframework.stereotype.Service;
 import com.pengrad.telegrambot.TelegramBot;
 import com.pengrad.telegrambot.request.SendMessage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Service;
 import selfConstructed.animalShelterTBot.model.Shelter;
 import selfConstructed.animalShelterTBot.repository.ShelterRepository;
 
@@ -20,6 +20,7 @@ public class ShelterInfoHandler {
     private final Logger logger = LoggerFactory.getLogger(ShelterInfoHandler.class);
     private final TelegramBot telegramBot;
     private ShelterRepository repository;
+    private final TextsService textsService;
 
     /**
      * Constructs a ShelterInfoHandler with the specified TelegramBot and ShelterRepository.
@@ -27,9 +28,10 @@ public class ShelterInfoHandler {
      * @param telegramBot The TelegramBot instance used to send messages.
      * @param repository  The repository for accessing shelter information.
      */
-    public ShelterInfoHandler(TelegramBot telegramBot, ShelterRepository repository) {
+    public ShelterInfoHandler(TelegramBot telegramBot, ShelterRepository repository, TextsService textsService) {
         this.telegramBot = telegramBot;
         this.repository = repository;
+        this.textsService = textsService;
     }
 
     /**
@@ -55,10 +57,10 @@ public class ShelterInfoHandler {
     private void getInfoAboutShelter(long chatId, Optional<Shelter> animalShelter) {
         if (animalShelter.isPresent()) {
             Shelter shelter = animalShelter.get();
-            String message = "Адрес : " + shelter.getAddress() +
-                    "\nКонтактная информация : " + shelter.getContactInfo() +
-                    "\nНаименование : " + shelter.getNameOfTheShelter() +
-                    "\nВремя работы: " + shelter.getOpeningHours();
+            String message = textsService.getTextOrDefault("Address", "get key") + shelter.getAddress() +
+                    textsService.getTextOrDefault("ContactInformation", "get key") + shelter.getContactInfo() +
+                    textsService.getTextOrDefault("Naming", "get key") + shelter.getNameOfTheShelter() +
+                    textsService.getTextOrDefault("TimeWork", "get key") + shelter.getOpeningHours();
             telegramBot.execute(new SendMessage(chatId, message));
             logger.info("Отправлено сообщение в чат: {}, {}", chatId, message);
         } else {

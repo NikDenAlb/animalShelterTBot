@@ -2,7 +2,8 @@ package selfConstructed.animalShelterTBot.model;
 
 import jakarta.persistence.*;
 import lombok.*;
-import selfConstructed.animalShelterTBot.model.Pet;
+import org.hibernate.annotations.JdbcType;
+import org.hibernate.dialect.PostgreSQLEnumJdbcType;
 
 @Entity
 @Getter
@@ -16,6 +17,9 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private Long chatId;
+    @JdbcType(PostgreSQLEnumJdbcType.class)
+    @Column(name = "user_type")
+    private TypeUser typeUser;
     private String fullName;
     private Long adult;
     private String address;

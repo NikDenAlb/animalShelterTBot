@@ -33,8 +33,8 @@ public class ShelterService {
     @PostConstruct
     void init() {
         if (shelterRepository.findAll().isEmpty()) {
-            shelterRepository.save(new Shelter(1L, "Кошки?", 1L, "КукуевоК", "4-5", "Звоните нам",null));
-            shelterRepository.save(new Shelter(2L, "Собаки?", 2L, "КукуевоС", "5-6", "Пишите нам",null));
+            shelterRepository.save(new Shelter(1L, "Кошкин Дом", 1L, "Кукуево", "6:00-18:00", "Звоните нам",null));
+            shelterRepository.save(new Shelter(2L, "Будка Шарика", 2L, "Кукуевка", "9:00-21:00", "Пишите нам",null));
         }
 
     }

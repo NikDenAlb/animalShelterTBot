@@ -8,29 +8,31 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import selfConstructed.animalShelterTBot.model.Bot0message;
+import selfConstructed.animalShelterTBot.model.Shelter;
 import selfConstructed.animalShelterTBot.service.Bot0messageService;
+import selfConstructed.animalShelterTBot.service.ShelterService;
 
 import java.util.Collection;
 import java.util.Optional;
 
 /**
- * class for setting up bot0 messages.
+ * class for setting up shelter information.
  * has no post or delete operations
  */
 @RestController
-@RequestMapping("/hello-bot")
-public class Bot0messageController {
-    private final Bot0messageService bot0MessageService;
+@RequestMapping("/shelter")
+public class ShelterController {
+    private final ShelterService shelterService;
 
-    public Bot0messageController(Bot0messageService bot0MessageService) {
-        this.bot0MessageService = bot0MessageService;
+    public ShelterController(ShelterService shelterService) {
+        this.shelterService = shelterService;
     }
 
     /**
-     * get all bot0 messages from DataBase
+     * get all shelter messages from DataBase
      * Use method of service {@link Bot0messageService#getAll()}
      *
-     * @return Collection<Bot0message>
+     * @return Collection<Shelter>
      */
     @Operation(summary = "Cписок сообщений начального бота",
             responses = {
@@ -45,8 +47,8 @@ public class Bot0messageController {
                     )}
     )
     @GetMapping
-    public Collection<Bot0message> getMessages() {
-        return bot0MessageService.getAll();
+    public Collection<Shelter> getMessages() {
+        return shelterService.getAll();
     }
 
     /**
@@ -62,14 +64,14 @@ public class Bot0messageController {
                             description = "Сообщение с новым текстом",
                             content = {
                                     @Content(mediaType = MediaType.APPLICATION_JSON_VALUE,
-                                            schema = @Schema(implementation = Bot0message.class)
+                                            schema = @Schema(implementation = Shelter.class)
                                     )
                             }
                     )}
     )
     @PutMapping
-    public ResponseEntity<Bot0message> editMessage(@RequestBody Bot0message bot0message) {
-        Optional<Bot0message> editBot0message = bot0MessageService.editMessage(bot0message);
-        return editBot0message.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
+    public ResponseEntity<Shelter> editMessage(@RequestBody Shelter shelter) {
+        Optional<Shelter> editShelter = shelterService.editMessage(shelter);
+        return editShelter.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }
 }

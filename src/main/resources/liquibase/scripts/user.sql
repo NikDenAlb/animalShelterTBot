@@ -32,7 +32,7 @@ CREATE TABLE IF NOT EXISTS shelters
 CREATE TABLE IF NOT EXISTS users
 (
     id           BIGSERIAL PRIMARY KEY,
-    chat_id      BIGINT NOT NULL,
+    chat_id   BIGINT    NOT NULL,
     user_type type_user NOT NULL,
     full_name    TEXT,
     adult        BIGINT,

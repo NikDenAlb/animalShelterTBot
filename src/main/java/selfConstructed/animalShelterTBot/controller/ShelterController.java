@@ -59,7 +59,7 @@ public class ShelterController {
             responses = {
                     @ApiResponse(
                             responseCode = "200",
-                            description = "Новое имя",
+                            description = "Приют с новым именем",
                             content = {
                                     @Content(mediaType = MediaType.APPLICATION_JSON_VALUE,
                                             schema = @Schema(implementation = Shelter.class)

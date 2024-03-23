@@ -3,8 +3,6 @@ package selfConstructed.animalShelterTBot.model;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.util.Set;
-
 @Entity
 @Getter
 @Setter
@@ -21,6 +19,4 @@ public class Shelter {
     private String address;
     private String openingHours;
     private String contactInfo;
-    @OneToMany(mappedBy = "shelter")
-    private Set<Pet> pets;
 }

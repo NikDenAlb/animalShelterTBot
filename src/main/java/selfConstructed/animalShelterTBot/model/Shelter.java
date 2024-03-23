@@ -2,7 +2,6 @@ package selfConstructed.animalShelterTBot.model;
 
 import jakarta.persistence.*;
 import lombok.*;
-import selfConstructed.animalShelterTBot.model.Pet;
 
 import java.util.Set;
 
@@ -18,7 +17,7 @@ public class Shelter {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String nameOfTheShelter;
-    private Long type_animal;
+    private Long typeAnimal;
     private String address;
     private String openingHours;
     private String contactInfo;

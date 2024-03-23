@@ -24,12 +24,18 @@ public class ShelterService {
         return shelterRepository.findAll();
     }
 
-    public Optional<Shelter> editMessage(Shelter shelter) {
-        if (shelterRepository.findById(String.valueOf(shelter.getId())).isPresent()) {
-            return Optional.of(shelterRepository.save(shelter));
+    public Optional<Shelter> editShelterName(String id, String shelterName) {
+        if (shelterRepository.findById(id).isPresent()) {
+            Shelter newShelter = shelterRepository.findById(id).get();
+            newShelter.setNameOfTheShelter(shelterName);
+            return Optional.of(shelterRepository.save(newShelter));
         }
         return Optional.empty();
     }
+
+    /**
+     * Put 2 standard shelters into DB if DB is empty
+     */
     @PostConstruct
     void init() {
         if (shelterRepository.findAll().isEmpty()) {

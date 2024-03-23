@@ -7,9 +7,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import selfConstructed.animalShelterTBot.model.Bot0message;
 import selfConstructed.animalShelterTBot.model.Shelter;
-import selfConstructed.animalShelterTBot.service.Bot0messageService;
 import selfConstructed.animalShelterTBot.service.ShelterService;
 
 import java.util.Collection;
@@ -29,39 +27,39 @@ public class ShelterController {
     }
 
     /**
-     * get all shelter messages from DataBase
-     * Use method of service {@link Bot0messageService#getAll()}
+     * get all shelters
+     * Use method of service {@link ShelterService#getAll()}
      *
      * @return Collection<Shelter>
      */
-    @Operation(summary = "Cписок сообщений начального бота",
+    @Operation(summary = "Cписок приютов",
             responses = {
                     @ApiResponse(
                             responseCode = "200",
-                            description = "список сообщений. Меняйте текст сообщения через put в /hello-bot по его ключу",
+                            description = "Меняйте характеристику приюта черем соответствующий метод по id приюта",
                             content = {
                                     @Content(mediaType = MediaType.APPLICATION_JSON_VALUE,
-                                            schema = @Schema(implementation = Bot0message.class)
+                                            schema = @Schema(implementation = Shelter.class)
                                     )
                             }
                     )}
     )
     @GetMapping
-    public Collection<Shelter> getMessages() {
+    public Collection<Shelter> getShelters() {
         return shelterService.getAll();
     }
 
     /**
-     * edit specific message in database
-     * Use method of service {@link Bot0messageService#editMessage(Bot0message bot0message)}
+     * edit name of the Shelter
+     * Use method of service {@link ShelterService#editShelterName(String, String)}}
      *
-     * @return Bot0message or notFound() if message_type is not in DataBase
+     * @return shelter or notFound() if id is not in the DataBase
      */
-    @Operation(summary = "Введите новый текст сообщения нужному типу ответа",
+    @Operation(summary = "Введите приюту с заданным id новое имя",
             responses = {
                     @ApiResponse(
                             responseCode = "200",
-                            description = "Сообщение с новым текстом",
+                            description = "Новое имя",
                             content = {
                                     @Content(mediaType = MediaType.APPLICATION_JSON_VALUE,
                                             schema = @Schema(implementation = Shelter.class)
@@ -70,8 +68,8 @@ public class ShelterController {
                     )}
     )
     @PutMapping
-    public ResponseEntity<Shelter> editMessage(@RequestBody Shelter shelter) {
-        Optional<Shelter> editShelter = shelterService.editMessage(shelter);
+    public ResponseEntity<Shelter> editShelterName(@RequestParam("id") String id, @RequestParam("shelterName") String shelterName) {
+        Optional<Shelter> editShelter = shelterService.editShelterName(id, shelterName);
         return editShelter.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }
 }

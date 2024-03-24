@@ -7,12 +7,10 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import selfConstructed.animalShelterTBot.model.Pet;
 import selfConstructed.animalShelterTBot.model.Shelter;
 import selfConstructed.animalShelterTBot.repository.ShelterRepository;
 
 import java.util.Optional;
-import java.util.Set;
 
 import static org.mockito.Mockito.*;
 

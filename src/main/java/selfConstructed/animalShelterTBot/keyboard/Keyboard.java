@@ -33,10 +33,7 @@ public class Keyboard {
         InlineKeyboardMarkup inlineKeyboardMarkup = new InlineKeyboardMarkup();
         InlineKeyboardButton button1 = new InlineKeyboardButton("Коты \uD83D\uDC08").callbackData("Коты");
         InlineKeyboardButton button2 = new InlineKeyboardButton("Собаки \uD83D\uDC15").callbackData("Собаки");
-        InlineKeyboardButton button3 = new InlineKeyboardButton("Вернуться в предыдущее меню ↩")
-                .callbackData("Назад");
         inlineKeyboardMarkup.addRow(button1, button2);
-        inlineKeyboardMarkup.addRow(button3);
         return inlineKeyboardMarkup;
     }
 
@@ -83,6 +80,13 @@ public class Keyboard {
         inlineKeyboardMarkup.addRow(button2);
         inlineKeyboardMarkup.addRow(button3);
         inlineKeyboardMarkup.addRow(button4);
+        return inlineKeyboardMarkup;
+    }
+    public InlineKeyboardMarkup getGoBackButton() {
+        InlineKeyboardMarkup inlineKeyboardMarkup = new InlineKeyboardMarkup();
+        InlineKeyboardButton button1 = new InlineKeyboardButton("Вернуться в предыдущее меню ↩")
+                .callbackData("Назад");
+        inlineKeyboardMarkup.addRow(button1);
         return inlineKeyboardMarkup;
     }
 }

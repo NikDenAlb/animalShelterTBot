@@ -4,6 +4,7 @@ import com.pengrad.telegrambot.TelegramBot;
 import com.pengrad.telegrambot.model.CallbackQuery;
 import com.pengrad.telegrambot.model.Message;
 import com.pengrad.telegrambot.model.request.InlineKeyboardMarkup;
+import com.pengrad.telegrambot.request.EditMessageReplyMarkup;
 import com.pengrad.telegrambot.request.SendMessage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -118,7 +119,10 @@ public class MsgHandler {
     private void chooseShelter(long chatId) {
         String message = "Выбери нужный приют \uD83D\uDC47";
         InlineKeyboardMarkup inlineKeyboardMarkup = keyboard.getShelter();
-        telegramBot.execute(new SendMessage(chatId, message).replyMarkup(inlineKeyboardMarkup));
+        EditMessageReplyMarkup editMessageReplyMarkup = new EditMessageReplyMarkup(chatId, welcomeHandler.getMessageId());
+        editMessageReplyMarkup.replyMarkup(inlineKeyboardMarkup);
+        telegramBot.execute(editMessageReplyMarkup);
+        telegramBot.execute(new SendMessage(chatId, message));
         logger.info("Отправлено сообщение с выбором приюта в чат {}: {}", chatId, message);
     }
 

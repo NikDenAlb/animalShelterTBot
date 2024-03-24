@@ -1,5 +1,8 @@
 package selfConstructed.animalShelterTBot.service;
 
+import com.pengrad.telegrambot.model.Message;
+import com.pengrad.telegrambot.response.SendResponse;
+import lombok.Getter;
 import org.springframework.stereotype.Service;
 import com.pengrad.telegrambot.TelegramBot;
 import com.pengrad.telegrambot.model.request.InlineKeyboardMarkup;
@@ -16,6 +19,8 @@ public class WelcomeHandler {
     private final Logger logger = LoggerFactory.getLogger(WelcomeHandler.class);
     private final TelegramBot telegramBot;
     private final Keyboard keyboard;
+    @Getter
+    private Integer messageId;
 
     public WelcomeHandler(TelegramBot telegramBot, Keyboard keyboard) {
         this.telegramBot = telegramBot;
@@ -32,7 +37,10 @@ public class WelcomeHandler {
                 + '\n' + "Для начала работы нажми кнопку КНОПКУ";
         InlineKeyboardMarkup inlineKeyboardMarkup = keyboard.getStartInlineButton();
         SendMessage sendMessage = new SendMessage(chatId, welcomeMessage);
-        telegramBot.execute(sendMessage.replyMarkup(inlineKeyboardMarkup));
+        SendResponse sendResponse = telegramBot.execute(sendMessage.replyMarkup(inlineKeyboardMarkup));
+        if (sendResponse.isOk()) {
+            messageId = sendResponse.message().messageId();
+        }
         logger.info("Отправлено приветственное сообщение в чат {}: {}", chatId, welcomeMessage);
     }
 }

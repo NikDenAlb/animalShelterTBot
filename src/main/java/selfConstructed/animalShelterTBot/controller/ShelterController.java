@@ -32,11 +32,11 @@ public class ShelterController {
      *
      * @return Collection<Shelter>
      */
-    @Operation(summary = "Cписок приютов",
+    @Operation(summary = "Список приютов",
             responses = {
                     @ApiResponse(
                             responseCode = "200",
-                            description = "Меняйте характеристику приюта черем соответствующий метод по id приюта",
+                            description = "Меняйте характеристику приюта через соответствующий метод по id приюта",
                             content = {
                                     @Content(mediaType = MediaType.APPLICATION_JSON_VALUE,
                                             schema = @Schema(implementation = Shelter.class)

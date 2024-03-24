@@ -4,7 +4,7 @@ import com.pengrad.telegrambot.TelegramBot;
 import com.pengrad.telegrambot.model.CallbackQuery;
 import com.pengrad.telegrambot.model.Message;
 import com.pengrad.telegrambot.model.request.InlineKeyboardMarkup;
-import com.pengrad.telegrambot.request.EditMessageReplyMarkup;
+import com.pengrad.telegrambot.request.EditMessageText;
 import com.pengrad.telegrambot.request.SendMessage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -76,34 +76,34 @@ public class MsgHandler {
         }
         switch (text) {
             case "Коты" -> {
-                processButton(chatId, text);
+                //     processButton(chatId, text);
                 disableButtonsTemporarily();
                 getShelterMenuCats(chatId);
             }
             case "Собаки" -> {
-                processButton(chatId, text);
+                //       processButton(chatId, text);
                 disableButtonsTemporarily();
                 getShelterMenuDogs(chatId);
             }
             case "Информация о приюте для собак" -> {
-                processButton(chatId, text);
+                //       processButton(chatId, text);
                 disableButtonsTemporarily();
                 shelterInfoHandler.shelterDogInfo(chatId);
             }//даем инфо по приюту
 
             case "Информация о приюте для котов" -> {
-                processButton(chatId, text);
+                //        processButton(chatId, text);
                 disableButtonsTemporarily();
                 shelterInfoHandler.shelterCatInfo(chatId);
             }//даем инфо по приюту
             case "Как взять собаку", "Как взять кота",
                     "Отчет о собаке", "Отчет о коте", "Назад" -> {
-                processButton(chatId, text);
+                //         processButton(chatId, text);
                 disableButtonsTemporarily();
                 sendMock(chatId);
             }
             default -> {
-                processButton(chatId, text);
+                //          processButton(chatId, text);
                 disableButtonsTemporarily();
                 chooseShelter(chatId);
             }
@@ -119,10 +119,9 @@ public class MsgHandler {
     private void chooseShelter(long chatId) {
         String message = "Выбери нужный приют \uD83D\uDC47";
         InlineKeyboardMarkup inlineKeyboardMarkup = keyboard.getShelter();
-        EditMessageReplyMarkup editMessageReplyMarkup = new EditMessageReplyMarkup(chatId, welcomeHandler.getMessageId());
-        editMessageReplyMarkup.replyMarkup(inlineKeyboardMarkup);
-        telegramBot.execute(editMessageReplyMarkup);
-        telegramBot.execute(new SendMessage(chatId, message));
+        EditMessageText editMessageText = new EditMessageText(chatId, welcomeHandler.getMessageId(), message)
+                .replyMarkup(inlineKeyboardMarkup);
+        telegramBot.execute(editMessageText);
         logger.info("Отправлено сообщение с выбором приюта в чат {}: {}", chatId, message);
     }
 
@@ -134,7 +133,9 @@ public class MsgHandler {
     private void getShelterMenuDogs(long chatId) {
         String message = "В следующем меню выберите интересующий вас пункт";
         InlineKeyboardMarkup inlineKeyboardMarkup = keyboard.getMenuAboutShelterDogs();
-        telegramBot.execute(new SendMessage(chatId, message).replyMarkup(inlineKeyboardMarkup));
+        EditMessageText editMessageText = new EditMessageText(chatId, welcomeHandler.getMessageId(), message)
+                .replyMarkup(inlineKeyboardMarkup);
+        telegramBot.execute(editMessageText);
         logger.info("Отправлено сообщение с выбором меню в чат {}: {}", chatId, message);
     }
 
@@ -146,7 +147,9 @@ public class MsgHandler {
     private void getShelterMenuCats(long chatId) {
         String message = "В следующем меню выберите интересующий вас пункт";
         InlineKeyboardMarkup inlineKeyboardMarkup = keyboard.getMenuAboutShelterCats();
-        telegramBot.execute(new SendMessage(chatId, message).replyMarkup(inlineKeyboardMarkup));
+        EditMessageText editMessageText = new EditMessageText(chatId, welcomeHandler.getMessageId(), message)
+                .replyMarkup(inlineKeyboardMarkup);
+        telegramBot.execute(editMessageText);
         logger.info("Отправлено сообщение с выбором меню в чат {}: {}", chatId, message);
     }
 
@@ -156,18 +159,18 @@ public class MsgHandler {
         telegramBot.execute(new SendMessage(chatId, message));
     }
 
-    /**
+/*   /**
      * Handles a button click by the user.
      *
      * @param chatId   user's chat identifier
      * @param callBack callback text
-     */
+
     private void processButton(long chatId, String callBack) {
         String message = "Вы нажали на кнопку " + callBack;
         telegramBot.execute(new SendMessage(chatId, message));
         logger.info("Пользователь {} нажал на кнопку {}", chatId, callBack);
     }
-
+*/
     /**
      * Temporarily disables buttons for a specified time.
      */

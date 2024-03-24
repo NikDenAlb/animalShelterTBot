@@ -20,18 +20,18 @@ public class ShelterInfoHandler {
     private final Logger logger = LoggerFactory.getLogger(ShelterInfoHandler.class);
     private final TelegramBot telegramBot;
     private ShelterRepository repository;
-    private final TextsService textsService;
+    private TextsService textsService;
 
     /**
      * Constructs a ShelterInfoHandler with the specified TelegramBot and ShelterRepository.
      *
-     * @param telegramBot The TelegramBot instance used to send messages.
-     * @param repository  The repository for accessing shelter information.
+     * @param telegramBot  The TelegramBot instance used to send messages.
+     * @param repository   The repository for accessing shelter information.
+     * @param textsService
      */
     public ShelterInfoHandler(TelegramBot telegramBot, ShelterRepository repository, TextsService textsService) {
         this.telegramBot = telegramBot;
         this.repository = repository;
-        this.textsService = textsService;
     }
 
     /**

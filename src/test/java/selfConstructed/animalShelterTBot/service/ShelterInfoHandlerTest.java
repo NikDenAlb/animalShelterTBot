@@ -22,22 +22,37 @@ public class ShelterInfoHandlerTest {
     private TelegramBot telegramBot;
     @Mock
     private ShelterRepository repository;
+    @Mock
+    private TextsService textsService;
 
     private ShelterInfoHandler shelterInfoHandler;
 
-
     @BeforeEach
     public void setUp() {
-        shelterInfoHandler = new ShelterInfoHandler(telegramBot, repository);
+        shelterInfoHandler = new ShelterInfoHandler(telegramBot, repository, textsService);
     }
 
     @Test
     public void whenShelterDogInfoIsCalled_thenMessageIsSentTest() {
         long chatId = 123456L;
-        Shelter dogShelter = new Shelter(1L, "Dog", 2L, "Address",
-                "Time", "Contact", Set.of(new Pet()));
+        Shelter shelter = new Shelter(1L, "Dog", 2L, "Address",
+                "Time", "Contact");
 
-        Optional<Shelter> expectedShelter = Optional.of(dogShelter);
+        Optional<Shelter> expectedShelter = Optional.of(shelter);
+
+        when(repository.findByDogs()).thenReturn(expectedShelter);
+        when(textsService.getTextOrDefault("Address", "get key")).thenReturn("Address");
+
+        shelterInfoHandler.shelterDogInfo(chatId);
+
+        verify(telegramBot, times(1)).execute(any(SendMessage.class));
+    }    @Test
+    public void whenShelterCaInfoIsCalled_thenMessageIsSentTest() {
+        long chatId = 123456L;
+        Shelter shelter = new Shelter(1L, "Cat", 1L, "Address",
+                "Time", "Contact");
+
+        Optional<Shelter> expectedShelter = Optional.of(shelter);
 
         when(repository.findByDogs()).thenReturn(expectedShelter);
 

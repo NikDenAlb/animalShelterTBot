@@ -4,7 +4,8 @@ import com.pengrad.telegrambot.TelegramBot;
 import com.pengrad.telegrambot.model.request.InlineKeyboardMarkup;
 import com.pengrad.telegrambot.request.EditMessageText;
 import com.pengrad.telegrambot.request.SendMessage;
-import lombok.AllArgsConstructor;
+import com.pengrad.telegrambot.response.SendResponse;
+import lombok.Getter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -15,12 +16,20 @@ import selfConstructed.animalShelterTBot.service.messageHandler.MsgHandler;
  * @author shinkevich
  */
 @Service
-@AllArgsConstructor
+
 public class MenuService {
     private final Logger logger = LoggerFactory.getLogger(MsgHandler.class);
     private final TelegramBot telegramBot;
     private final Keyboard keyboard;
     private final WelcomeHandler welcomeHandler;
+    @Getter
+    private Integer messageId;
+
+    public MenuService(TelegramBot telegramBot, Keyboard keyboard, WelcomeHandler welcomeHandler) {
+        this.telegramBot = telegramBot;
+        this.keyboard = keyboard;
+        this.welcomeHandler = welcomeHandler;
+    }
 
     /**
      * Sends a message with the choice of shelter to the user.
@@ -83,12 +92,18 @@ public class MenuService {
     //этот метод нужно будет удалить когда все приложение будет работать
     public void sendMock(long chatId) {
         String message = "\uD83D\uDED1Ведутся ремонтные работы\uD83D\uDED1";
-        telegramBot.execute(new SendMessage(chatId, message));
+        SendResponse sendResponse = telegramBot.execute(new SendMessage(chatId, message));
+        if (sendResponse.isOk()) {
+            messageId = sendResponse.message().messageId();
+        }
     }
 
     private void processSendMessage(long chatId, String message, InlineKeyboardMarkup inlineKeyboardMarkup) {
         SendMessage sendMessage = new SendMessage(chatId, message).replyMarkup(inlineKeyboardMarkup);
-        telegramBot.execute(sendMessage);
+        SendResponse sendResponse = telegramBot.execute(sendMessage);
+        if (sendResponse.isOk()) {
+            messageId = sendResponse.message().messageId();
+        }
     }
 
     private void processEditMessageSendText(long chatId, String message, InlineKeyboardMarkup inlineKeyboardMarkup) {

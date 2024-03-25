@@ -2,14 +2,21 @@ package selfConstructed.animalShelterTBot.service;
 
 import com.pengrad.telegrambot.TelegramBot;
 import com.pengrad.telegrambot.request.SendMessage;
+import com.pengrad.telegrambot.response.SendResponse;
+import lombok.Getter;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 @Service
-public class ShelterInfoSender {
+public class ShelterAdoptionInfo {
+    private final Logger logger = LoggerFactory.getLogger(WelcomeHandler.class);
     private final TelegramBot telegramBot;
+    @Getter
+    private Integer messageId;
 
 
-    public ShelterInfoSender(TelegramBot telegramBot) {
+    public ShelterAdoptionInfo(TelegramBot telegramBot) {
         this.telegramBot = telegramBot;
     }
 
@@ -25,6 +32,9 @@ public class ShelterInfoSender {
 
                 Спасибо, что рассматриваете возможность усыновления животного из нашего приюта!""";
         SendMessage sendMessage = new SendMessage(chatId, info);
-        telegramBot.execute(sendMessage);
+        SendResponse sendResponse = telegramBot.execute(sendMessage);
+        if (sendResponse.isOk()) {
+            messageId = sendResponse.message().messageId();
+        }
     }
 }

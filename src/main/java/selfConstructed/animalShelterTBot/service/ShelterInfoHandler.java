@@ -2,6 +2,8 @@ package selfConstructed.animalShelterTBot.service;
 
 import com.pengrad.telegrambot.TelegramBot;
 import com.pengrad.telegrambot.request.SendMessage;
+import com.pengrad.telegrambot.response.SendResponse;
+import lombok.Getter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -22,19 +24,20 @@ public class ShelterInfoHandler {
     private final TelegramBot telegramBot;
     private ShelterRepository repository;
     private TextsService textsService;
+    @Getter
+    private Integer messageId;
 
     /**
      * Constructs a ShelterInfoHandler with the specified TelegramBot and ShelterRepository.
      *
      * @param telegramBot  The TelegramBot instance used to send messages.
      * @param repository   The repository for accessing shelter information.
-
      * @param textsService
      */
     public ShelterInfoHandler(TelegramBot telegramBot, ShelterRepository repository, TextsService textsService) {
         this.telegramBot = telegramBot;
         this.repository = repository;
-            this.textsService = textsService;
+        this.textsService = textsService;
     }
 
     /**
@@ -65,7 +68,10 @@ public class ShelterInfoHandler {
                     textsService.getTextOrDefault("Naming", "get key") + shelter.getNameOfTheShelter() +
                     textsService.getTextOrDefault("TimeWork", "get key") + shelter.getOpeningHours();
             SendMessage sendMessage = new SendMessage(chatId, message);
-            telegramBot.execute(sendMessage);
+            SendResponse sendResponse = telegramBot.execute(sendMessage);
+            if (sendResponse.isOk()) {
+                messageId = sendResponse.message().messageId();
+            }
             logger.info("Отправлено сообщение в чат: {}, {}", chatId, message);
         } else {
             telegramBot.execute(new SendMessage(chatId, "Нет подходящих приютов"));

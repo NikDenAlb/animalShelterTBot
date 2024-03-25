@@ -1,18 +1,20 @@
 package selfConstructed.animalShelterTBot.service.messageHandler;
 
+import com.pengrad.telegrambot.TelegramBot;
 import com.pengrad.telegrambot.model.CallbackQuery;
 import com.pengrad.telegrambot.model.Message;
+import com.pengrad.telegrambot.request.DeleteMessages;
 import lombok.AllArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import selfConstructed.animalShelterTBot.service.MenuService;
 import selfConstructed.animalShelterTBot.service.ShelterInfoHandler;
-import selfConstructed.animalShelterTBot.service.ShelterInfoSender;
+import selfConstructed.animalShelterTBot.service.ShelterAdoptionInfo;
 import selfConstructed.animalShelterTBot.service.WelcomeHandler;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
@@ -28,11 +30,13 @@ import java.util.concurrent.atomic.AtomicBoolean;
 public class MsgHandler {
 
     private final Logger logger = LoggerFactory.getLogger(MsgHandler.class);
+    private final TelegramBot telegramBot;
     private final MenuService menu;
     private final ShelterInfoHandler shelterInfoHandler;
     private final WelcomeHandler welcomeHandler;
-    private final ShelterInfoSender shelterInfoSender;
-    private final Map<Long, Integer> previousMessages = new HashMap<>();
+    private final ShelterAdoptionInfo shelterAdoptionInfo;
+
+    private final List<Integer> messagesId = new ArrayList<>();
     private final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
 
     /**
@@ -56,8 +60,18 @@ public class MsgHandler {
     public void handleCallBack(CallbackQuery callbackQuery) {
         Long chatId = callbackQuery.from().id();
         String text = callbackQuery.data();
-        int messageId = callbackQuery.message().messageId();
-        previousMessages.put(chatId, messageId);
+        if (welcomeHandler.getMessageId() != null) {
+            messagesId.add(welcomeHandler.getMessageId());
+        }
+        if (shelterInfoHandler.getMessageId() != null) {
+            messagesId.add(shelterInfoHandler.getMessageId());
+        }
+        if (shelterAdoptionInfo.getMessageId() != null) {
+            messagesId.add(shelterAdoptionInfo.getMessageId());
+        }
+        if (menu.getMessageId() != null) {
+            messagesId.add(menu.getMessageId());
+        }
         boolean buttonEnabled = true;
         if (!buttonEnabled) {
             return;
@@ -83,26 +97,24 @@ public class MsgHandler {
             }
             case "Как взять собаку" -> {
                 disableButtonsTemporarily();
-                shelterInfoSender.sendAdoptionInfo(chatId);
+                shelterAdoptionInfo.sendAdoptionInfo(chatId);
                 menu.getShelterMenuDogsNew(chatId);
             }
             case "Как взять кота" -> {
                 disableButtonsTemporarily();
-                shelterInfoSender.sendAdoptionInfo(chatId);
+                shelterAdoptionInfo.sendAdoptionInfo(chatId);
                 menu.getShelterMenuCatsNew(chatId);
             }
-                      case "Отчет о собаке", "Отчет о коте", "Волонтер" -> {
+            case "Назад" -> {
+                DeleteMessages deleteMessages = new DeleteMessages(chatId, messagesId.stream()
+                        .mapToInt(Integer::intValue).toArray());
+                telegramBot.execute(deleteMessages);
+                disableButtonsTemporarily();
+                welcomeHandler.sendWelcomeMessage(chatId);
+            }
+            case "Отчет о собаке", "Отчет о коте", "Волонтер" -> {
                 disableButtonsTemporarily();
                 menu.sendMock(chatId);
-//                Integer previousMessageId = previousMessages.get(chatId);
-//                if (previousMessageId != null) {
-//                    EditMessageText editMessageText = new EditMessageText(chatId, previousMessageId, "Вернулись назад.");
-//
-//                    telegramBot.execute(editMessageText);
-//                    logger.info("Отправлено предыдущее сообщение в чат {}: {}", chatId, previousMessageId);
-//                } else {
-//                    telegramBot.execute(new SendMessage(chatId, "Нет предыдущего сообщения."));
-//                }
             }
             default -> {
                 disableButtonsTemporarily();

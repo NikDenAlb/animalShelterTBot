@@ -37,6 +37,7 @@ public class WelcomeHandler {
         InlineKeyboardMarkup inlineKeyboardMarkup = keyboard.getStartInlineButton();
         SendMessage sendMessage = new SendMessage(chatId, welcomeMessage);
         SendResponse sendResponse = telegramBot.execute(sendMessage.replyMarkup(inlineKeyboardMarkup));
+        messageId = null;
         if (sendResponse.isOk()) {
             messageId = sendResponse.message().messageId();
         }

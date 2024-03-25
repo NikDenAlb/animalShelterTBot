@@ -51,12 +51,9 @@ public class Keyboard {
                 .callbackData("Как взять собаку");
         InlineKeyboardButton button3 = new InlineKeyboardButton("Прислать отчет о питомце \uD83D\uDCCB")
                 .callbackData("Отчет о собаке");
-        InlineKeyboardButton button4 = new InlineKeyboardButton("Вернуться в предыдущее меню ↩")
-                .callbackData("Назад");
         inlineKeyboardMarkup.addRow(button1);
         inlineKeyboardMarkup.addRow(button2);
         inlineKeyboardMarkup.addRow(button3);
-        inlineKeyboardMarkup.addRow(button4);
         return inlineKeyboardMarkup;
     }
 
@@ -74,17 +71,15 @@ public class Keyboard {
                 .callbackData("Как взять кота");
         InlineKeyboardButton button3 = new InlineKeyboardButton("Прислать отчет о питомце \uD83D\uDCCB")
                 .callbackData("Отчет о коте");
-        InlineKeyboardButton button4 = new InlineKeyboardButton("Вернуться в предыдущее меню ↩")
-                .callbackData("Назад");
         inlineKeyboardMarkup.addRow(button1);
         inlineKeyboardMarkup.addRow(button2);
         inlineKeyboardMarkup.addRow(button3);
-        inlineKeyboardMarkup.addRow(button4);
         return inlineKeyboardMarkup;
     }
+
     public InlineKeyboardMarkup getGoBackButton() {
         InlineKeyboardMarkup inlineKeyboardMarkup = new InlineKeyboardMarkup();
-        InlineKeyboardButton button1 = new InlineKeyboardButton("Вернуться в предыдущее меню ↩")
+        InlineKeyboardButton button1 = new InlineKeyboardButton("Назад")
                 .callbackData("Назад");
         inlineKeyboardMarkup.addRow(button1);
         return inlineKeyboardMarkup;

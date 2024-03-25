@@ -7,10 +7,12 @@ import com.pengrad.telegrambot.model.request.InlineKeyboardMarkup;
 import com.pengrad.telegrambot.request.EditMessageReplyMarkup;
 import com.pengrad.telegrambot.request.EditMessageText;
 import com.pengrad.telegrambot.request.SendMessage;
+import lombok.AllArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import selfConstructed.animalShelterTBot.keyboard.Keyboard;
+import selfConstructed.animalShelterTBot.service.MenuService;
 import selfConstructed.animalShelterTBot.service.ShelterInfoHandler;
 import selfConstructed.animalShelterTBot.service.ShelterInfoSender;
 import selfConstructed.animalShelterTBot.service.WelcomeHandler;
@@ -28,34 +30,16 @@ import java.util.concurrent.atomic.AtomicBoolean;
  * @author shinkevich
  */
 @Service
+@AllArgsConstructor
 public class MsgHandler {
 
     private final Logger logger = LoggerFactory.getLogger(MsgHandler.class);
-    private final TelegramBot telegramBot;
+    private final MenuService menu;
     private final ShelterInfoHandler shelterInfoHandler;
     private final WelcomeHandler welcomeHandler;
     private final ShelterInfoSender shelterInfoSender;
-    private final Keyboard keyboard;
     private final Map<Long, Integer> previousMessages = new HashMap<>();
     private final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
-
-    /**
-     * Constructor for MsgHandler.
-     *
-     * @param telegramBot        TelegramBot object
-     * @param shelterInfoHandler ShelterInfoHandler object
-     * @param welcomeHandler     WelcomeHandler object
-     * @param shelterInfoSender
-     * @param keyboard           Keyboard object
-     */
-    public MsgHandler(TelegramBot telegramBot, ShelterInfoHandler shelterInfoHandler,
-                      WelcomeHandler welcomeHandler, ShelterInfoSender shelterInfoSender, Keyboard keyboard) {
-        this.telegramBot = telegramBot;
-        this.shelterInfoHandler = shelterInfoHandler;
-        this.welcomeHandler = welcomeHandler;
-        this.shelterInfoSender = shelterInfoSender;
-        this.keyboard = keyboard;
-    }
 
     /**
      * Processing a message from the user.
@@ -87,11 +71,11 @@ public class MsgHandler {
         switch (text) {
             case "Коты" -> {
                 disableButtonsTemporarily();
-                getShelterMenuCats(chatId);
+                menu.getShelterMenuCats(chatId);
             }
             case "Собаки" -> {
                 disableButtonsTemporarily();
-                getShelterMenuDogs(chatId);
+                menu.getShelterMenuDogs(chatId);
             }
             case "Информация о приюте для собак" -> {
                 disableButtonsTemporarily();
@@ -104,16 +88,16 @@ public class MsgHandler {
             case "Как взять собаку" -> {
                 disableButtonsTemporarily();
                 shelterInfoSender.sendAdoptionInfo(chatId);
-                getShelterMenuDogs(chatId);
+                menu.getShelterMenuDogs(chatId);
             }
             case "Как взять кота" -> {
                 disableButtonsTemporarily();
                 shelterInfoSender.sendAdoptionInfo(chatId);
-                getShelterMenuCats(chatId);
+                menu.getShelterMenuCats(chatId);
             }
             case "Назад", "Отчет о собаке", "Отчет о коте" -> {
                 disableButtonsTemporarily();
-                sendMock(chatId);
+                menu.sendMock(chatId);
 //                Integer previousMessageId = previousMessages.get(chatId);
 //                if (previousMessageId != null) {
 //                    EditMessageText editMessageText = new EditMessageText(chatId, previousMessageId, "Вернулись назад.");
@@ -126,58 +110,9 @@ public class MsgHandler {
             }
             default -> {
                 disableButtonsTemporarily();
-                chooseShelter(chatId);
+                menu.chooseShelter(chatId);
             }
         }
-    }
-
-
-    /**
-     * Sends a message with the choice of shelter to the user.
-     *
-     * @param chatId user's chat identifier
-     */
-    private void chooseShelter(long chatId) {
-        String message = "Выбери нужный приют \uD83D\uDC47";
-        InlineKeyboardMarkup inlineKeyboardMarkup = keyboard.getShelter();
-        EditMessageText editMessageText = new EditMessageText(chatId, welcomeHandler.getMessageId(), message)
-                .replyMarkup(inlineKeyboardMarkup);
-        telegramBot.execute(editMessageText);
-        logger.info("Отправлено сообщение с выбором приюта в чат {}: {}", chatId, message);
-    }
-
-    /**
-     * Sends a menu for selecting options related to shelter dogs to the specified chat ID.
-     *
-     * @param chatId The ID of the chat where the menu should be sent.
-     */
-    private void getShelterMenuDogs(long chatId) {
-        String message = "В следующем меню выберите интересующий вас пункт";
-        InlineKeyboardMarkup inlineKeyboardMarkup = keyboard.getMenuAboutShelterDogs();
-        EditMessageText editMessageText = new EditMessageText(chatId, welcomeHandler.getMessageId(), message)
-                .replyMarkup(inlineKeyboardMarkup);
-        telegramBot.execute(editMessageText);
-        logger.info("Отправлено сообщение с выбором меню в чат {}: {}", chatId, message);
-    }
-
-    /**
-     * Sends a menu for selecting options related to shelter cats to the specified chat ID.
-     *
-     * @param chatId The ID of the chat where the menu should be sent.
-     */
-    private void getShelterMenuCats(long chatId) {
-        String message = "В следующем меню выберите интересующий вас пункт";
-        InlineKeyboardMarkup inlineKeyboardMarkup = keyboard.getMenuAboutShelterCats();
-        EditMessageText editMessageText = new EditMessageText(chatId, welcomeHandler.getMessageId(), message)
-                .replyMarkup(inlineKeyboardMarkup);
-        telegramBot.execute(editMessageText);
-        logger.info("Отправлено сообщение с выбором меню в чат {}: {}", chatId, message);
-    }
-
-    //этот метод нужно будет удалить когда все приложение будет работать
-    private void sendMock(long chatId) {
-        String message = "\uD83D\uDED1Ведутся ремонтные работы\uD83D\uDED1";
-        telegramBot.execute(new SendMessage(chatId, message));
     }
 
     /**

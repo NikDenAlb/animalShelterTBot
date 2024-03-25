@@ -1,17 +1,11 @@
 package selfConstructed.animalShelterTBot.service.messageHandler;
 
-import com.pengrad.telegrambot.TelegramBot;
 import com.pengrad.telegrambot.model.CallbackQuery;
 import com.pengrad.telegrambot.model.Message;
-import com.pengrad.telegrambot.model.request.InlineKeyboardMarkup;
-import com.pengrad.telegrambot.request.EditMessageReplyMarkup;
-import com.pengrad.telegrambot.request.EditMessageText;
-import com.pengrad.telegrambot.request.SendMessage;
 import lombok.AllArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
-import selfConstructed.animalShelterTBot.keyboard.Keyboard;
 import selfConstructed.animalShelterTBot.service.MenuService;
 import selfConstructed.animalShelterTBot.service.ShelterInfoHandler;
 import selfConstructed.animalShelterTBot.service.ShelterInfoSender;
@@ -71,11 +65,11 @@ public class MsgHandler {
         switch (text) {
             case "Коты" -> {
                 disableButtonsTemporarily();
-                menu.getShelterMenuCats(chatId);
+                menu.getShelterMenuCatsReWrite(chatId);
             }
             case "Собаки" -> {
                 disableButtonsTemporarily();
-                menu.getShelterMenuDogs(chatId);
+                menu.getShelterMenuDogsReWrite(chatId);
             }
             case "Информация о приюте для собак" -> {
                 disableButtonsTemporarily();
@@ -88,12 +82,12 @@ public class MsgHandler {
             case "Как взять собаку" -> {
                 disableButtonsTemporarily();
                 shelterInfoSender.sendAdoptionInfo(chatId);
-                menu.getShelterMenuDogs(chatId);
+                menu.getShelterMenuDogsReWrite(chatId);
             }
             case "Как взять кота" -> {
                 disableButtonsTemporarily();
                 shelterInfoSender.sendAdoptionInfo(chatId);
-                menu.getShelterMenuCats(chatId);
+                menu.getShelterMenuCatsReWrite(chatId);
             }
             case "Назад", "Отчет о собаке", "Отчет о коте" -> {
                 disableButtonsTemporarily();
@@ -110,7 +104,7 @@ public class MsgHandler {
             }
             default -> {
                 disableButtonsTemporarily();
-                menu.chooseShelter(chatId);
+                menu.chooseShelterNew(chatId);
             }
         }
     }

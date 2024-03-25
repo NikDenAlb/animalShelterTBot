@@ -11,6 +11,9 @@ import org.springframework.stereotype.Service;
 import selfConstructed.animalShelterTBot.keyboard.Keyboard;
 import selfConstructed.animalShelterTBot.service.messageHandler.MsgHandler;
 
+/**
+ * @author shinkevich
+ */
 @Service
 @AllArgsConstructor
 public class MenuService {
@@ -25,12 +28,17 @@ public class MenuService {
      * @param chatId user's chat identifier
      */
 
-    public void chooseShelter(long chatId) {
+    public void chooseShelterReWrite(long chatId) {
         String message = "Выбери нужный приют \uD83D\uDC47";
         InlineKeyboardMarkup inlineKeyboardMarkup = keyboard.getShelter();
-        EditMessageText editMessageText = new EditMessageText(chatId, welcomeHandler.getMessageId(), message)
-                .replyMarkup(inlineKeyboardMarkup);
-        telegramBot.execute(editMessageText);
+        processEditMessageSendText(chatId, message, inlineKeyboardMarkup);
+        logger.info("Отправлено сообщение с выбором приюта в чат {}: {}", chatId, message);
+    }
+
+    public void chooseShelterNew(long chatId) {
+        String message = "Выбери нужный приют \uD83D\uDC47";
+        InlineKeyboardMarkup inlineKeyboardMarkup = keyboard.getShelter();
+        processSendMessage(chatId, message, inlineKeyboardMarkup);
         logger.info("Отправлено сообщение с выбором приюта в чат {}: {}", chatId, message);
     }
 
@@ -39,12 +47,17 @@ public class MenuService {
      *
      * @param chatId The ID of the chat where the menu should be sent.
      */
-    public void getShelterMenuDogs(long chatId) {
+    public void getShelterMenuDogsReWrite(long chatId) {
         String message = "В следующем меню выберите интересующий вас пункт";
         InlineKeyboardMarkup inlineKeyboardMarkup = keyboard.getMenuAboutShelterDogs();
-        EditMessageText editMessageText = new EditMessageText(chatId, welcomeHandler.getMessageId(), message)
-                .replyMarkup(inlineKeyboardMarkup);
-        telegramBot.execute(editMessageText);
+        processEditMessageSendText(chatId, message, inlineKeyboardMarkup);
+        logger.info("Отправлено сообщение с выбором меню в чат {}: {}", chatId, message);
+    }
+
+    public void getShelterMenuDogsNew(long chatId) {
+        String message = "В следующем меню выберите интересующий вас пункт";
+        InlineKeyboardMarkup inlineKeyboardMarkup = keyboard.getMenuAboutShelterDogs();
+        processSendMessage(chatId, message, inlineKeyboardMarkup);
         logger.info("Отправлено сообщение с выбором меню в чат {}: {}", chatId, message);
     }
 
@@ -53,12 +66,17 @@ public class MenuService {
      *
      * @param chatId The ID of the chat where the menu should be sent.
      */
-    public void getShelterMenuCats(long chatId) {
+    public void getShelterMenuCatsReWrite(long chatId) {
         String message = "В следующем меню выберите интересующий вас пункт";
         InlineKeyboardMarkup inlineKeyboardMarkup = keyboard.getMenuAboutShelterCats();
-        EditMessageText editMessageText = new EditMessageText(chatId, welcomeHandler.getMessageId(), message)
-                .replyMarkup(inlineKeyboardMarkup);
-        telegramBot.execute(editMessageText);
+        processEditMessageSendText(chatId, message, inlineKeyboardMarkup);
+        logger.info("Отправлено сообщение с выбором меню в чат {}: {}", chatId, message);
+    }
+
+    public void getShelterMenuCatsNew(long chatId) {
+        String message = "В следующем меню выберите интересующий вас пункт";
+        InlineKeyboardMarkup inlineKeyboardMarkup = keyboard.getMenuAboutShelterCats();
+        processSendMessage(chatId, message, inlineKeyboardMarkup);
         logger.info("Отправлено сообщение с выбором меню в чат {}: {}", chatId, message);
     }
 
@@ -66,5 +84,16 @@ public class MenuService {
     public void sendMock(long chatId) {
         String message = "\uD83D\uDED1Ведутся ремонтные работы\uD83D\uDED1";
         telegramBot.execute(new SendMessage(chatId, message));
+    }
+
+    private void processSendMessage(long chatId, String message, InlineKeyboardMarkup inlineKeyboardMarkup) {
+        SendMessage sendMessage = new SendMessage(chatId, message).replyMarkup(inlineKeyboardMarkup);
+        telegramBot.execute(sendMessage);
+    }
+
+    private void processEditMessageSendText(long chatId, String message, InlineKeyboardMarkup inlineKeyboardMarkup) {
+        EditMessageText editMessageText = new EditMessageText(chatId, welcomeHandler.getMessageId(), message)
+                .replyMarkup(inlineKeyboardMarkup);
+        telegramBot.execute(editMessageText);
     }
 }

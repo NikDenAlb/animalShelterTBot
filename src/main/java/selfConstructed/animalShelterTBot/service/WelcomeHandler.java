@@ -1,6 +1,5 @@
 package selfConstructed.animalShelterTBot.service;
 
-import com.pengrad.telegrambot.model.Message;
 import com.pengrad.telegrambot.response.SendResponse;
 import lombok.Getter;
 import org.springframework.stereotype.Service;

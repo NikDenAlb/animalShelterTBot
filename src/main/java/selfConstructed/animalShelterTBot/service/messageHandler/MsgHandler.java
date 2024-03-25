@@ -47,6 +47,7 @@ public class MsgHandler {
     public void handleMessage(Message message) {
         Long chatId = message.chat().id();
         String text = message.text();
+        logger.info("Получено сообщение от пользователя {}: {}", chatId, text);
         if ("/start".equals(text)) {
             welcomeHandler.sendWelcomeMessage(chatId);
         }
@@ -60,6 +61,7 @@ public class MsgHandler {
     public void handleCallBack(CallbackQuery callbackQuery) {
         Long chatId = callbackQuery.from().id();
         String text = callbackQuery.data();
+        logger.info("Получен ответ от пользователя {}: {}", chatId, text);
         if (welcomeHandler.getMessageId() != null) {
             messagesId.add(welcomeHandler.getMessageId());
         }

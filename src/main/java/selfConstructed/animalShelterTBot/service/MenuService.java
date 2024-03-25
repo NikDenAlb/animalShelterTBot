@@ -44,12 +44,13 @@ public class MenuService {
         logger.info("Отправлено сообщение с выбором приюта в чат {}: {}", chatId, message);
     }
 
-    public void chooseShelterNew(long chatId) {
+  /*  public void chooseShelterNew(long chatId) {
         String message = "Выбери нужный приют \uD83D\uDC47";
         InlineKeyboardMarkup inlineKeyboardMarkup = keyboard.getShelter();
         processSendMessage(chatId, message, inlineKeyboardMarkup);
         logger.info("Отправлено сообщение с выбором приюта в чат {}: {}", chatId, message);
     }
+*/
 
     /**
      * Sends a menu for selecting options related to shelter dogs to the specified chat ID.

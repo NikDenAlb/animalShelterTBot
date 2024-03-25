@@ -35,6 +35,9 @@ public class ShelterAdoptionInfo {
         SendResponse sendResponse = telegramBot.execute(sendMessage);
         if (sendResponse.isOk()) {
             messageId = sendResponse.message().messageId();
+            logger.info("Отправлено сообщение об усыновлении в чат {}: {}", chatId, info);
+        } else {
+            logger.error("Не удалось отправить сообщение об усыновлении в чат {}", chatId);
         }
     }
 }

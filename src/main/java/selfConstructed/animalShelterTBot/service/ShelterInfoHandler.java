@@ -7,7 +7,6 @@ import lombok.Getter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
-import selfConstructed.animalShelterTBot.keyboard.Keyboard;
 import selfConstructed.animalShelterTBot.model.Shelter;
 import selfConstructed.animalShelterTBot.repository.ShelterRepository;
 
@@ -22,8 +21,8 @@ import java.util.Optional;
 public class ShelterInfoHandler {
     private final Logger logger = LoggerFactory.getLogger(ShelterInfoHandler.class);
     private final TelegramBot telegramBot;
-    private ShelterRepository repository;
-    private TextsService textsService;
+    private final ShelterRepository repository;
+    private final TextsService textsService;
     @Getter
     private Integer messageId;
 
@@ -32,7 +31,7 @@ public class ShelterInfoHandler {
      *
      * @param telegramBot  The TelegramBot instance used to send messages.
      * @param repository   The repository for accessing shelter information.
-     * @param textsService
+     * @param textsService Service for processing welcome message.
      */
     public ShelterInfoHandler(TelegramBot telegramBot, ShelterRepository repository, TextsService textsService) {
         this.telegramBot = telegramBot;

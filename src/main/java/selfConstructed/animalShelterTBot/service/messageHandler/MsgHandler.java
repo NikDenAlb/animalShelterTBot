@@ -91,7 +91,7 @@ public class MsgHandler {
                 shelterInfoSender.sendAdoptionInfo(chatId);
                 menu.getShelterMenuCatsNew(chatId);
             }
-            case "Назад", "Отчет о собаке", "Отчет о коте", "Волонтер" -> {
+                      case "Отчет о собаке", "Отчет о коте", "Волонтер" -> {
                 disableButtonsTemporarily();
                 menu.sendMock(chatId);
 //                Integer previousMessageId = previousMessages.get(chatId);

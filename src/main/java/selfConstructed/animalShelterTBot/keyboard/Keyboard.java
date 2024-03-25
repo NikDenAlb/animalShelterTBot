@@ -53,10 +53,13 @@ public class Keyboard {
                 .callbackData("Отчет о собаке");
         InlineKeyboardButton button4 = new InlineKeyboardButton("\uD83D\uDCF1 Позвать волонтера \uD83D\uDCF1")
                 .callbackData("Волонтер");
+        InlineKeyboardButton button5 = new InlineKeyboardButton("\uD83D\uDC3E Вернуться в меню приютов \uD83D\uDC3E")
+                .callbackData("Назад");
         inlineKeyboardMarkup.addRow(button1);
         inlineKeyboardMarkup.addRow(button2);
         inlineKeyboardMarkup.addRow(button3);
         inlineKeyboardMarkup.addRow(button4);
+        inlineKeyboardMarkup.addRow(button5);
         return inlineKeyboardMarkup;
     }
 
@@ -76,10 +79,13 @@ public class Keyboard {
                 .callbackData("Отчет о коте");
         InlineKeyboardButton button4 = new InlineKeyboardButton("\uD83D\uDCF1 Позвать волонтера \uD83D\uDCF1")
                 .callbackData("Волонтер");
+        InlineKeyboardButton button5 = new InlineKeyboardButton("\uD83D\uDC3E Вернуться в меню приютов \uD83D\uDC3E")
+                .callbackData("Назад");
         inlineKeyboardMarkup.addRow(button1);
         inlineKeyboardMarkup.addRow(button2);
         inlineKeyboardMarkup.addRow(button3);
         inlineKeyboardMarkup.addRow(button4);
+        inlineKeyboardMarkup.addRow(button5);
         return inlineKeyboardMarkup;
     }
 

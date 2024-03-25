@@ -11,6 +11,7 @@ import org.mockito.Captor;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import selfConstructed.animalShelterTBot.keyboard.Keyboard;
+import selfConstructed.animalShelterTBot.repository.UserRepository;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.*;
@@ -21,13 +22,14 @@ public class WelcomeHandlerTest {
     private TelegramBot telegramBot;
     @Mock
     private Keyboard keyboard;
+    private UserRepository userRepository;
     private WelcomeHandler welcomeHandler;
     @Captor
     ArgumentCaptor<SendMessage> sendMessageCaptor;//создаем капчу для аргумента передаваемого в метод
 
     @BeforeEach
     public void setUp() {
-        welcomeHandler = new WelcomeHandler(telegramBot, keyboard);
+        welcomeHandler = new WelcomeHandler(telegramBot, keyboard, userRepository);
     }
 
 

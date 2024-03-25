@@ -48,14 +48,14 @@ public class MenuService {
      * @param chatId The ID of the chat where the menu should be sent.
      */
     public void getShelterMenuDogsReWrite(long chatId) {
-        String message = "В следующем меню выберите интересующий вас пункт";
+        String message = " \uD83D\uDC15 Выберите интересующий вас пункт \uD83D\uDC15";
         InlineKeyboardMarkup inlineKeyboardMarkup = keyboard.getMenuAboutShelterDogs();
         processEditMessageSendText(chatId, message, inlineKeyboardMarkup);
         logger.info("Отправлено сообщение с выбором меню в чат {}: {}", chatId, message);
     }
 
     public void getShelterMenuDogsNew(long chatId) {
-        String message = "В следующем меню выберите интересующий вас пункт";
+        String message = "\uD83D\uDC15 Выберите интересующий вас пункт \uD83D\uDC15";
         InlineKeyboardMarkup inlineKeyboardMarkup = keyboard.getMenuAboutShelterDogs();
         processSendMessage(chatId, message, inlineKeyboardMarkup);
         logger.info("Отправлено сообщение с выбором меню в чат {}: {}", chatId, message);
@@ -67,14 +67,14 @@ public class MenuService {
      * @param chatId The ID of the chat where the menu should be sent.
      */
     public void getShelterMenuCatsReWrite(long chatId) {
-        String message = "В следующем меню выберите интересующий вас пункт";
+        String message = "\uD83D\uDC08 Выберите интересующий вас пункт \uD83D\uDC08";
         InlineKeyboardMarkup inlineKeyboardMarkup = keyboard.getMenuAboutShelterCats();
         processEditMessageSendText(chatId, message, inlineKeyboardMarkup);
         logger.info("Отправлено сообщение с выбором меню в чат {}: {}", chatId, message);
     }
 
     public void getShelterMenuCatsNew(long chatId) {
-        String message = "В следующем меню выберите интересующий вас пункт";
+        String message = "\uD83D\uDC08 Выберите интересующий вас пункт \uD83D\uDC08";
         InlineKeyboardMarkup inlineKeyboardMarkup = keyboard.getMenuAboutShelterCats();
         processSendMessage(chatId, message, inlineKeyboardMarkup);
         logger.info("Отправлено сообщение с выбором меню в чат {}: {}", chatId, message);

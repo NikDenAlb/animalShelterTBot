@@ -74,22 +74,24 @@ public class MsgHandler {
             case "Информация о приюте для собак" -> {
                 disableButtonsTemporarily();
                 shelterInfoHandler.shelterDogInfo(chatId);
+                menu.getShelterMenuDogsNew(chatId);
             }
             case "Информация о приюте для котов" -> {
                 disableButtonsTemporarily();
                 shelterInfoHandler.shelterCatInfo(chatId);
+                menu.getShelterMenuCatsNew(chatId);
             }
             case "Как взять собаку" -> {
                 disableButtonsTemporarily();
                 shelterInfoSender.sendAdoptionInfo(chatId);
-                menu.getShelterMenuDogsReWrite(chatId);
+                menu.getShelterMenuDogsNew(chatId);
             }
             case "Как взять кота" -> {
                 disableButtonsTemporarily();
                 shelterInfoSender.sendAdoptionInfo(chatId);
-                menu.getShelterMenuCatsReWrite(chatId);
+                menu.getShelterMenuCatsNew(chatId);
             }
-            case "Назад", "Отчет о собаке", "Отчет о коте" -> {
+            case "Назад", "Отчет о собаке", "Отчет о коте", "Волонтер" -> {
                 disableButtonsTemporarily();
                 menu.sendMock(chatId);
 //                Integer previousMessageId = previousMessages.get(chatId);
@@ -104,7 +106,7 @@ public class MsgHandler {
             }
             default -> {
                 disableButtonsTemporarily();
-                menu.chooseShelterNew(chatId);
+                menu.chooseShelterReWrite(chatId);
             }
         }
     }

@@ -11,5 +11,4 @@ public class AnimalShelterTBotApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(AnimalShelterTBotApplication.class, args);
 	}
-
 }

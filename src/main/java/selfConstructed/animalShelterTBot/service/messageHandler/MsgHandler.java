@@ -3,15 +3,18 @@ package selfConstructed.animalShelterTBot.service.messageHandler;
 import com.pengrad.telegrambot.TelegramBot;
 import com.pengrad.telegrambot.model.CallbackQuery;
 import com.pengrad.telegrambot.model.Message;
-import com.pengrad.telegrambot.model.request.InlineKeyboardMarkup;
-import com.pengrad.telegrambot.request.SendMessage;
+import com.pengrad.telegrambot.request.DeleteMessages;
+import lombok.AllArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
-import selfConstructed.animalShelterTBot.keyboard.Keyboard;
+import selfConstructed.animalShelterTBot.service.MenuService;
 import selfConstructed.animalShelterTBot.service.ShelterInfoHandler;
+import selfConstructed.animalShelterTBot.service.ShelterAdoptionInfo;
 import selfConstructed.animalShelterTBot.service.WelcomeHandler;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
@@ -23,30 +26,18 @@ import java.util.concurrent.atomic.AtomicBoolean;
  * @author shinkevich
  */
 @Service
+@AllArgsConstructor
 public class MsgHandler {
 
     private final Logger logger = LoggerFactory.getLogger(MsgHandler.class);
     private final TelegramBot telegramBot;
+    private final MenuService menu;
     private final ShelterInfoHandler shelterInfoHandler;
     private final WelcomeHandler welcomeHandler;
-    private final Keyboard keyboard;
-    private final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
+    private final ShelterAdoptionInfo shelterAdoptionInfo;
 
-    /**
-     * Constructor for MsgHandler.
-     *
-     * @param telegramBot        TelegramBot object
-     * @param shelterInfoHandler ShelterInfoHandler object
-     * @param welcomeHandler     WelcomeHandler object
-     * @param keyboard           Keyboard object
-     */
-    public MsgHandler(TelegramBot telegramBot, ShelterInfoHandler shelterInfoHandler,
-                      WelcomeHandler welcomeHandler, Keyboard keyboard) {
-        this.telegramBot = telegramBot;
-        this.shelterInfoHandler = shelterInfoHandler;
-        this.welcomeHandler = welcomeHandler;
-        this.keyboard = keyboard;
-    }
+    private final List<Integer> messagesId = new ArrayList<>();
+    private final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
 
     /**
      * Processing a message from the user.
@@ -56,6 +47,7 @@ public class MsgHandler {
     public void handleMessage(Message message) {
         Long chatId = message.chat().id();
         String text = message.text();
+        logger.info("Получено сообщение от пользователя {}: {}", chatId, text);
         if ("/start".equals(text)) {
             welcomeHandler.sendWelcomeMessage(chatId);
         }
@@ -69,99 +61,68 @@ public class MsgHandler {
     public void handleCallBack(CallbackQuery callbackQuery) {
         Long chatId = callbackQuery.from().id();
         String text = callbackQuery.data();
+        logger.info("Получен ответ от пользователя {}: {}", chatId, text);
+        if (welcomeHandler.getMessageId() != null) {
+            messagesId.add(welcomeHandler.getMessageId());
+        }
+        if (shelterInfoHandler.getMessageId() != null) {
+            messagesId.add(shelterInfoHandler.getMessageId());
+        }
+        if (shelterAdoptionInfo.getMessageId() != null) {
+            messagesId.add(shelterAdoptionInfo.getMessageId());
+        }
+        if (menu.getMessageId() != null) {
+            messagesId.add(menu.getMessageId());
+        }
         boolean buttonEnabled = true;
         if (!buttonEnabled) {
             return;
         }
         switch (text) {
             case "Коты" -> {
-                processButton(chatId, text);
                 disableButtonsTemporarily();
-                getShelterMenuCats(chatId);
+                menu.getShelterMenuCatsReWrite(chatId);
             }
             case "Собаки" -> {
-                processButton(chatId, text);
                 disableButtonsTemporarily();
-                getShelterMenuDogs(chatId);
+                menu.getShelterMenuDogsReWrite(chatId);
             }
             case "Информация о приюте для собак" -> {
-                processButton(chatId, text);
                 disableButtonsTemporarily();
                 shelterInfoHandler.shelterDogInfo(chatId);
-            }//даем инфо по приюту
-
+                menu.getShelterMenuDogsNew(chatId);
+            }
             case "Информация о приюте для котов" -> {
-                processButton(chatId, text);
                 disableButtonsTemporarily();
                 shelterInfoHandler.shelterCatInfo(chatId);
-            }//даем инфо по приюту
-            case "Как взять собаку", "Как взять кота",
-                    "Отчет о собаке", "Отчет о коте", "Назад" -> {
-                processButton(chatId, text);
+                menu.getShelterMenuCatsNew(chatId);
+            }
+            case "Как взять собаку" -> {
                 disableButtonsTemporarily();
-                sendMock(chatId);
+                shelterAdoptionInfo.sendAdoptionInfo(chatId);
+                menu.getShelterMenuDogsNew(chatId);
+            }
+            case "Как взять кота" -> {
+                disableButtonsTemporarily();
+                shelterAdoptionInfo.sendAdoptionInfo(chatId);
+                menu.getShelterMenuCatsNew(chatId);
+            }
+            case "Назад" -> {
+                DeleteMessages deleteMessages = new DeleteMessages(chatId, messagesId.stream()
+                        .mapToInt(Integer::intValue).toArray());
+                telegramBot.execute(deleteMessages);
+                disableButtonsTemporarily();
+                welcomeHandler.sendWelcomeMessage(chatId);
+            }
+            case "Отчет о собаке", "Отчет о коте", "Волонтер" -> {
+                disableButtonsTemporarily();
+                menu.sendMock(chatId);
             }
             default -> {
-                processButton(chatId, text);
                 disableButtonsTemporarily();
-                chooseShelter(chatId);
+                menu.chooseShelterReWrite(chatId);
             }
         }
-    }
-
-
-    /**
-     * Sends a message with the choice of shelter to the user.
-     *
-     * @param chatId user's chat identifier
-     */
-    private void chooseShelter(long chatId) {
-        String message = "Выбери нужный приют \uD83D\uDC47";
-        InlineKeyboardMarkup inlineKeyboardMarkup = keyboard.getShelter();
-        telegramBot.execute(new SendMessage(chatId, message).replyMarkup(inlineKeyboardMarkup));
-        logger.info("Отправлено сообщение с выбором приюта в чат {}: {}", chatId, message);
-    }
-
-    /**
-     * Sends a menu for selecting options related to shelter dogs to the specified chat ID.
-     *
-     * @param chatId The ID of the chat where the menu should be sent.
-     */
-    private void getShelterMenuDogs(long chatId) {
-        String message = "В следующем меню выберите интересующий вас пункт";
-        InlineKeyboardMarkup inlineKeyboardMarkup = keyboard.getMenuAboutShelterDogs();
-        telegramBot.execute(new SendMessage(chatId, message).replyMarkup(inlineKeyboardMarkup));
-        logger.info("Отправлено сообщение с выбором меню в чат {}: {}", chatId, message);
-    }
-
-    /**
-     * Sends a menu for selecting options related to shelter cats to the specified chat ID.
-     *
-     * @param chatId The ID of the chat where the menu should be sent.
-     */
-    private void getShelterMenuCats(long chatId) {
-        String message = "В следующем меню выберите интересующий вас пункт";
-        InlineKeyboardMarkup inlineKeyboardMarkup = keyboard.getMenuAboutShelterCats();
-        telegramBot.execute(new SendMessage(chatId, message).replyMarkup(inlineKeyboardMarkup));
-        logger.info("Отправлено сообщение с выбором меню в чат {}: {}", chatId, message);
-    }
-
-    //этот метод нужно будет удалить когда все приложение будет работать
-    private void sendMock(long chatId) {
-        String message = "\uD83D\uDED1Ведутся ремонтные работы\uD83D\uDED1";
-        telegramBot.execute(new SendMessage(chatId, message));
-    }
-
-    /**
-     * Handles a button click by the user.
-     *
-     * @param chatId   user's chat identifier
-     * @param callBack callback text
-     */
-    private void processButton(long chatId, String callBack) {
-        String message = "Вы нажали на кнопку " + callBack;
-        telegramBot.execute(new SendMessage(chatId, message));
-        logger.info("Пользователь {} нажал на кнопку {}", chatId, callBack);
     }
 
     /**

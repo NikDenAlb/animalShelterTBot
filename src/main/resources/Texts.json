@@ -1,6 +1,6 @@
 {
-  "Address": "Адрес ",
-  "ContactInformation": "\nКонтактная информация : ",
-  "Naming": "\nНаименование : ",
+  "Address": "Адрес: ",
+  "ContactInformation": "\nКонтактная информация: ",
+  "Naming": "\nНаименование: ",
   "TimeWork": "\nВремя работы: "
 }

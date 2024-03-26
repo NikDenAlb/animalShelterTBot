@@ -5,6 +5,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import selfConstructed.animalShelterTBot.model.Shelter;
+import selfConstructed.animalShelterTBot.model.TypePet;
 import selfConstructed.animalShelterTBot.repository.ShelterRepository;
 
 import java.util.Collection;
@@ -39,8 +40,8 @@ public class ShelterService {
     @PostConstruct
     void init() {
         if (shelterRepository.findAll().isEmpty()) {
-            shelterRepository.save(new Shelter(1L, "Кошкин Дом", 1L, "Кукуево", "6:00-18:00", "Звоните нам"));
-            shelterRepository.save(new Shelter(2L, "Будка Шарика", 2L, "Кукуевка", "9:00-21:00", "Пишите нам"));
+            shelterRepository.save(new Shelter(1L, "Кошкин Дом", TypePet.Cat, "Кукуево", "6:00-18:00", "Звоните нам"));
+            shelterRepository.save(new Shelter(2L, "Будка Шарика", TypePet.Dog, "Кукуевка", "9:00-21:00", "Пишите нам"));
         }
 
     }

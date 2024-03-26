@@ -25,7 +25,7 @@ CREATE TABLE IF NOT EXISTS shelters
 (
     id                  BIGSERIAL PRIMARY KEY,
     name_of_the_shelter TEXT    NOT NULL,
-    animal_type         BIGINT  NOT NULL,
+    pet_type type_pet NOT NULL,
     address             TEXT    NOT NULL,
     opening_hours       TEXT    NOT NULL,
     contact_info        TEXT    NOT NULL

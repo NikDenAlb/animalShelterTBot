@@ -65,9 +65,9 @@ public class ShelterInfoHandler {
     private void getInfoAboutShelterDogs(long chatId, Optional<Shelter> animalShelter) {
         if (animalShelter.isPresent()) {
             Shelter shelter = animalShelter.get();
-            String message = "Адрес: " + shelter.getAddress() +
-                    "Контакты: " + shelter.getContactInfo() +
-                    "Название: " + shelter.getNameOfTheShelter() +
+            String message = "Адрес: " + shelter.getAddress() + "\n" +
+                    "Контакты: " + shelter.getContactInfo() + "\n" +
+                    "Название: " + shelter.getNameOfTheShelter() + "\n" +
                     "Время работы: " + shelter.getOpeningHours();
             InlineKeyboardMarkup inlineKeyboardMarkup = keyboard.getGoBackButtonDogs();
             SendMessage sendMessage = new SendMessage(chatId, message).replyMarkup(inlineKeyboardMarkup);
@@ -85,9 +85,9 @@ public class ShelterInfoHandler {
     private void getInfoAboutShelterCats(long chatId, Optional<Shelter> animalShelter) {
         if (animalShelter.isPresent()) {
             Shelter shelter = animalShelter.get();
-            String message = "Адрес: " + shelter.getAddress() +
-                    "Контакты: " + shelter.getContactInfo() +
-                    "Название: " + shelter.getNameOfTheShelter() +
+            String message = "Адрес: " + shelter.getAddress() + "\n" +
+                    "Контакты: " + shelter.getContactInfo() + "\n" +
+                    "Название: " + shelter.getNameOfTheShelter() + "\n" +
                     "Время работы: " + shelter.getOpeningHours();
             InlineKeyboardMarkup inlineKeyboardMarkup = keyboard.getGoBackButtonCats();
             SendMessage sendMessage = new SendMessage(chatId, message).replyMarkup(inlineKeyboardMarkup);

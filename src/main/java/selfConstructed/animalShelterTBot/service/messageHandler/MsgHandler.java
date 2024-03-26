@@ -9,8 +9,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import selfConstructed.animalShelterTBot.service.MenuService;
-import selfConstructed.animalShelterTBot.service.ShelterInfoHandler;
 import selfConstructed.animalShelterTBot.service.ShelterAdoptionInfo;
+import selfConstructed.animalShelterTBot.service.ShelterInfoHandler;
 import selfConstructed.animalShelterTBot.service.WelcomeHandler;
 
 import java.util.ArrayList;
@@ -114,7 +114,8 @@ public class MsgHandler {
                 disableButtonsTemporarily();
                 welcomeHandler.sendWelcomeMessage(chatId);
             }
-            case "Отчет о собаке", "Отчет о коте", "Волонтер" -> {
+            case "Отчет о собаке", "Отчет о коте", "Волонтер",
+                    "Приютить кота", "Приютить собаку" -> {
                 disableButtonsTemporarily();
                 menu.sendMock(chatId);
             }

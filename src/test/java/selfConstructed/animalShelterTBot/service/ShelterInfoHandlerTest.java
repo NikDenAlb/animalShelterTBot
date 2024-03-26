@@ -30,7 +30,7 @@ public class ShelterInfoHandlerTest {
 
     @BeforeEach
     public void setUp() {
-        shelterInfoHandler = new ShelterInfoHandler(telegramBot, repository, keyboard, textsService);
+        shelterInfoHandler = new ShelterInfoHandler(telegramBot, repository, keyboard);
     }
 
     @Test

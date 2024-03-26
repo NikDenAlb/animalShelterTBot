@@ -12,9 +12,9 @@ import java.util.Optional;
  * @author hlopachev, shinkevich
  */
 public interface ShelterRepository extends JpaRepository<Shelter,String> {
-    @Query(value = "SELECT s FROM Shelter s where s.typePet = :typePet", nativeQuery = true)
+    @Query(value = "SELECT * FROM shelters where pet_type = :typePet", nativeQuery = true)
     Optional<Shelter> findByDogs(@Param("typePet") String typePet);
 
-    @Query(value = "SELECT s FROM Shelter s where s.typePet = :typePet", nativeQuery = true)
+    @Query(value = "SELECT * FROM shelters where pet_type = :typePet", nativeQuery = true)
     Optional<Shelter> findByCats(@Param("typePet") String typePet);
 }

@@ -4,4 +4,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import selfConstructed.animalShelterTBot.model.User;
 
 public interface UserRepository extends JpaRepository<User, String> {
+    User findByChatId(long chatId);
 }

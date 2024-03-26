@@ -8,9 +8,11 @@ import lombok.AllArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
+import selfConstructed.animalShelterTBot.model.User;
+import selfConstructed.animalShelterTBot.repository.UserRepository;
 import selfConstructed.animalShelterTBot.service.MenuService;
-import selfConstructed.animalShelterTBot.service.ShelterInfoHandler;
 import selfConstructed.animalShelterTBot.service.ShelterAdoptionInfo;
+import selfConstructed.animalShelterTBot.service.ShelterInfoHandler;
 import selfConstructed.animalShelterTBot.service.WelcomeHandler;
 
 import java.util.ArrayList;
@@ -35,6 +37,7 @@ public class MsgHandler {
     private final ShelterInfoHandler shelterInfoHandler;
     private final WelcomeHandler welcomeHandler;
     private final ShelterAdoptionInfo shelterAdoptionInfo;
+    private final UserRepository userRepository;
 
     private final List<Integer> messagesId = new ArrayList<>();
     private final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
@@ -50,6 +53,11 @@ public class MsgHandler {
         logger.info("Получено сообщение от пользователя {}: {}", chatId, text);
         if ("/start".equals(text)) {
             welcomeHandler.sendWelcomeMessage(chatId);
+        }
+        if (userRepository.findByChatId(chatId) == null) {
+            User user = new User();
+            user.setChatId(chatId);
+            userRepository.save(user);
         }
     }
 

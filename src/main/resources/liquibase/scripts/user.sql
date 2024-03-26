@@ -8,7 +8,7 @@ CREATE TYPE type_user AS enum ('user', 'volunteer');
 CREATE TABLE IF NOT EXISTS reports
 (
     id                  BIGSERIAL PRIMARY KEY,
-    photo               TEXT,
+    photo VARCHAR[255],
     diet                TEXT,
     change_in_behavior  TEXT,
     general_information TEXT

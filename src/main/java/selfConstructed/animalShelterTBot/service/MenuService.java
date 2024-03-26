@@ -44,25 +44,19 @@ public class MenuService {
         logger.info("Отправлено сообщение с выбором приюта в чат {}: {}", chatId, message);
     }
 
-  /*  public void chooseShelterNew(long chatId) {
+    public void chooseShelterNew(long chatId) {
         String message = "Выбери нужный приют \uD83D\uDC47";
         InlineKeyboardMarkup inlineKeyboardMarkup = keyboard.getShelter();
         processSendMessage(chatId, message, inlineKeyboardMarkup);
         logger.info("Отправлено сообщение с выбором приюта в чат {}: {}", chatId, message);
     }
-*/
+
 
     /**
      * Sends a menu for selecting options related to shelter dogs to the specified chat ID.
      *
      * @param chatId The ID of the chat where the menu should be sent.
      */
-    public void getShelterMenuDogsReWrite(long chatId) {
-        String message = " \uD83D\uDC15 Выберите интересующий вас пункт \uD83D\uDC15";
-        InlineKeyboardMarkup inlineKeyboardMarkup = keyboard.getMenuAboutShelterDogs();
-        processEditMessageSendText(chatId, message, inlineKeyboardMarkup);
-        logger.info("Отправлено сообщение с выбором меню в чат {}: {}", chatId, message);
-    }
 
     public void getShelterMenuDogsNew(long chatId) {
         String message = "\uD83D\uDC15 Выберите интересующий вас пункт \uD83D\uDC15";
@@ -76,12 +70,6 @@ public class MenuService {
      *
      * @param chatId The ID of the chat where the menu should be sent.
      */
-    public void getShelterMenuCatsReWrite(long chatId) {
-        String message = "\uD83D\uDC08 Выберите интересующий вас пункт \uD83D\uDC08";
-        InlineKeyboardMarkup inlineKeyboardMarkup = keyboard.getMenuAboutShelterCats();
-        processEditMessageSendText(chatId, message, inlineKeyboardMarkup);
-        logger.info("Отправлено сообщение с выбором меню в чат {}: {}", chatId, message);
-    }
 
     public void getShelterMenuCatsNew(long chatId) {
         String message = "\uD83D\uDC08 Выберите интересующий вас пункт \uD83D\uDC08";

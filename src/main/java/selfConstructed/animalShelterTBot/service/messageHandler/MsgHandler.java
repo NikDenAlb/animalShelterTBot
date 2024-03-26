@@ -3,6 +3,7 @@ package selfConstructed.animalShelterTBot.service.messageHandler;
 import com.pengrad.telegrambot.TelegramBot;
 import com.pengrad.telegrambot.model.CallbackQuery;
 import com.pengrad.telegrambot.model.Message;
+import com.pengrad.telegrambot.request.DeleteMessage;
 import com.pengrad.telegrambot.request.DeleteMessages;
 import lombok.AllArgsConstructor;
 import org.slf4j.Logger;
@@ -35,6 +36,7 @@ public class MsgHandler {
     private final ShelterInfoHandler shelterInfoHandler;
     private final WelcomeHandler welcomeHandler;
     private final ShelterAdoptionInfo shelterAdoptionInfo;
+
 
     private final List<Integer> messagesId = new ArrayList<>();
     private final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
@@ -80,32 +82,54 @@ public class MsgHandler {
         }
         switch (text) {
             case "Коты" -> {
+                if (welcomeHandler.getMessageId() != null) {
+                    DeleteMessage deleteMessage = new DeleteMessage(chatId, welcomeHandler.getMessageId());
+                    telegramBot.execute(deleteMessage);
+                }
                 disableButtonsTemporarily();
-                menu.getShelterMenuCatsReWrite(chatId);
+                menu.getShelterMenuCatsNew(chatId);
             }
             case "Собаки" -> {
+                if (welcomeHandler.getMessageId() != null) {
+                    DeleteMessage deleteMessage = new DeleteMessage(chatId, welcomeHandler.getMessageId());
+                    telegramBot.execute(deleteMessage);
+                }
                 disableButtonsTemporarily();
-                menu.getShelterMenuDogsReWrite(chatId);
+                menu.getShelterMenuDogsNew(chatId);
             }
             case "Информация о приюте для собак" -> {
+                if (menu.getMessageId() != null) {
+                    DeleteMessage deleteMessage = new DeleteMessage(chatId, menu.getMessageId());
+                    telegramBot.execute(deleteMessage);
+                }
                 disableButtonsTemporarily();
                 shelterInfoHandler.shelterDogInfo(chatId);
-                menu.getShelterMenuDogsNew(chatId);
             }
             case "Информация о приюте для котов" -> {
+                if (menu.getMessageId() != null) {
+                    DeleteMessage deleteMessage = new DeleteMessage(chatId, menu.getMessageId());
+                    telegramBot.execute(deleteMessage);
+                }
                 disableButtonsTemporarily();
                 shelterInfoHandler.shelterCatInfo(chatId);
+            }
+            case "Как взять собаку", "Как взять кота" -> {
+                if (menu.getMessageId() != null) {
+                    DeleteMessage deleteMessage = new DeleteMessage(chatId, menu.getMessageId());
+                    telegramBot.execute(deleteMessage);
+                }
+                disableButtonsTemporarily();
+                shelterAdoptionInfo.sendAdoptionInfo(chatId, callbackQuery);
+            }
+            case "Возврат в меню коты" -> {
+                DeleteMessage deleteMessage = new DeleteMessage(chatId, messagesId.size() - 1);
+                telegramBot.execute(deleteMessage);
                 menu.getShelterMenuCatsNew(chatId);
             }
-            case "Как взять собаку" -> {
-                disableButtonsTemporarily();
-                shelterAdoptionInfo.sendAdoptionInfo(chatId);
+            case "Возврат в меню собаки" -> {
+                DeleteMessage deleteMessage = new DeleteMessage(chatId, messagesId.size() - 1);
+                telegramBot.execute(deleteMessage);
                 menu.getShelterMenuDogsNew(chatId);
-            }
-            case "Как взять кота" -> {
-                disableButtonsTemporarily();
-                shelterAdoptionInfo.sendAdoptionInfo(chatId);
-                menu.getShelterMenuCatsNew(chatId);
             }
             case "Назад" -> {
                 DeleteMessages deleteMessages = new DeleteMessages(chatId, messagesId.stream()

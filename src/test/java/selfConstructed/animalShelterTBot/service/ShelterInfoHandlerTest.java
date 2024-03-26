@@ -7,6 +7,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import selfConstructed.animalShelterTBot.keyboard.Keyboard;
 import selfConstructed.animalShelterTBot.model.Shelter;
 import selfConstructed.animalShelterTBot.repository.ShelterRepository;
 
@@ -22,12 +23,13 @@ public class ShelterInfoHandlerTest {
     private ShelterRepository repository;
     @Mock
     private TextsService textsService;
-
+    @Mock
+    private Keyboard keyboard;
     private ShelterInfoHandler shelterInfoHandler;
 
     @BeforeEach
     public void setUp() {
-        shelterInfoHandler = new ShelterInfoHandler(telegramBot, repository, textsService);
+        shelterInfoHandler = new ShelterInfoHandler(telegramBot, repository, keyboard, textsService);
     }
 
     @Test
@@ -44,7 +46,9 @@ public class ShelterInfoHandlerTest {
         shelterInfoHandler.shelterDogInfo(chatId);
 
         verify(telegramBot, times(1)).execute(any(SendMessage.class));
-    }    @Test
+    }
+
+    @Test
     public void whenShelterCaInfoIsCalled_thenMessageIsSentTest() {
         long chatId = 123456L;
         Shelter shelter = new Shelter(1L, "Cat", 1L, "Address",

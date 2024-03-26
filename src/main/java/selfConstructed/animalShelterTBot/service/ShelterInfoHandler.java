@@ -1,12 +1,14 @@
 package selfConstructed.animalShelterTBot.service;
 
 import com.pengrad.telegrambot.TelegramBot;
+import com.pengrad.telegrambot.model.request.InlineKeyboardMarkup;
 import com.pengrad.telegrambot.request.SendMessage;
 import com.pengrad.telegrambot.response.SendResponse;
 import lombok.Getter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
+import selfConstructed.animalShelterTBot.keyboard.Keyboard;
 import selfConstructed.animalShelterTBot.model.Shelter;
 import selfConstructed.animalShelterTBot.repository.ShelterRepository;
 
@@ -22,21 +24,21 @@ public class ShelterInfoHandler {
     private final Logger logger = LoggerFactory.getLogger(ShelterInfoHandler.class);
     private final TelegramBot telegramBot;
     private final ShelterRepository repository;
-    private final TextsService textsService;
+    private final Keyboard keyboard;
     @Getter
     private Integer messageId;
 
     /**
      * Constructs a ShelterInfoHandler with the specified TelegramBot and ShelterRepository.
      *
-     * @param telegramBot  The TelegramBot instance used to send messages.
-     * @param repository   The repository for accessing shelter information.
-     * @param textsService Service for processing welcome message.
+     * @param telegramBot The TelegramBot instance used to send messages.
+     * @param repository  The repository for accessing shelter information.
+     * @param keyboard    The keyboard for telegram bot
      */
-    public ShelterInfoHandler(TelegramBot telegramBot, ShelterRepository repository, TextsService textsService) {
+    public ShelterInfoHandler(TelegramBot telegramBot, ShelterRepository repository, Keyboard keyboard) {
         this.telegramBot = telegramBot;
         this.repository = repository;
-        this.textsService = textsService;
+        this.keyboard = keyboard;
     }
 
     /**
@@ -46,7 +48,7 @@ public class ShelterInfoHandler {
      */
     public void shelterDogInfo(long chatId) {
         Optional<Shelter> dogShelter = repository.findByDogs();
-        getInfoAboutShelter(chatId, dogShelter);
+        getInfoAboutShelterDogs(chatId, dogShelter);
     }
 
     /**
@@ -56,17 +58,38 @@ public class ShelterInfoHandler {
      */
     public void shelterCatInfo(long chatId) {
         Optional<Shelter> catShelter = repository.findByCats();
-        getInfoAboutShelter(chatId, catShelter);
+        getInfoAboutShelterCats(chatId, catShelter);
     }
 
-    private void getInfoAboutShelter(long chatId, Optional<Shelter> animalShelter) {
+    private void getInfoAboutShelterDogs(long chatId, Optional<Shelter> animalShelter) {
         if (animalShelter.isPresent()) {
             Shelter shelter = animalShelter.get();
-            String message = textsService.getTextOrDefault("Address", "get key") + shelter.getAddress() +
-                    textsService.getTextOrDefault("ContactInformation", "get key") + shelter.getContactInfo() +
-                    textsService.getTextOrDefault("Naming", "get key") + shelter.getNameOfTheShelter() +
-                    textsService.getTextOrDefault("TimeWork", "get key") + shelter.getOpeningHours();
-            SendMessage sendMessage = new SendMessage(chatId, message);
+            String message = "Адрес: " + shelter.getAddress() +
+                    "Контакты: " + shelter.getContactInfo() +
+                    "Название: " + shelter.getNameOfTheShelter() +
+                    "Время работы: " + shelter.getOpeningHours();
+            InlineKeyboardMarkup inlineKeyboardMarkup = keyboard.getGoBackButtonDogs();
+            SendMessage sendMessage = new SendMessage(chatId, message).replyMarkup(inlineKeyboardMarkup);
+            SendResponse sendResponse = telegramBot.execute(sendMessage);
+            if (sendResponse.isOk()) {
+                messageId = sendResponse.message().messageId();
+            }
+            logger.info("Отправлено сообщение в чат: {}, {}", chatId, message);
+        } else {
+            telegramBot.execute(new SendMessage(chatId, "Нет подходящих приютов"));
+            logger.info("Отправлено сообщение в чат: {}, Нет подходящих приютов", chatId);
+        }
+    }
+
+    private void getInfoAboutShelterCats(long chatId, Optional<Shelter> animalShelter) {
+        if (animalShelter.isPresent()) {
+            Shelter shelter = animalShelter.get();
+            String message = "Адрес: " + shelter.getAddress() +
+                    "Контакты: " + shelter.getContactInfo() +
+                    "Название: " + shelter.getNameOfTheShelter() +
+                    "Время работы: " + shelter.getOpeningHours();
+            InlineKeyboardMarkup inlineKeyboardMarkup = keyboard.getGoBackButtonCats();
+            SendMessage sendMessage = new SendMessage(chatId, message).replyMarkup(inlineKeyboardMarkup);
             SendResponse sendResponse = telegramBot.execute(sendMessage);
             if (sendResponse.isOk()) {
                 messageId = sendResponse.message().messageId();

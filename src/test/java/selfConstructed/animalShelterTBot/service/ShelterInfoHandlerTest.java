@@ -9,6 +9,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import selfConstructed.animalShelterTBot.keyboard.Keyboard;
 import selfConstructed.animalShelterTBot.model.Shelter;
+import selfConstructed.animalShelterTBot.model.TypePet;
 import selfConstructed.animalShelterTBot.repository.ShelterRepository;
 
 import java.util.Optional;
@@ -35,12 +36,12 @@ public class ShelterInfoHandlerTest {
     @Test
     public void whenShelterDogInfoIsCalled_thenMessageIsSentTest() {
         long chatId = 123456L;
-        Shelter shelter = new Shelter(1L, "Dog", 2L, "Address",
+        Shelter shelter = new Shelter(1L, "Dog", TypePet.Dog, "Address",
                 "Time", "Contact");
 
         Optional<Shelter> expectedShelter = Optional.of(shelter);
 
-        when(repository.findByDogs()).thenReturn(expectedShelter);
+        when(repository.findByDogs(TypePet.Dog.name())).thenReturn(expectedShelter);
         when(textsService.getTextOrDefault("Address", "get key")).thenReturn("Address");
 
         shelterInfoHandler.shelterDogInfo(chatId);
@@ -51,12 +52,12 @@ public class ShelterInfoHandlerTest {
     @Test
     public void whenShelterCaInfoIsCalled_thenMessageIsSentTest() {
         long chatId = 123456L;
-        Shelter shelter = new Shelter(1L, "Cat", 1L, "Address",
+        Shelter shelter = new Shelter(1L, "Cat", TypePet.Cat, "Address",
                 "Time", "Contact");
 
         Optional<Shelter> expectedShelter = Optional.of(shelter);
 
-        when(repository.findByDogs()).thenReturn(expectedShelter);
+        when(repository.findByDogs(TypePet.Dog.name())).thenReturn(expectedShelter);
 
         shelterInfoHandler.shelterDogInfo(chatId);
 
@@ -67,7 +68,7 @@ public class ShelterInfoHandlerTest {
     public void whenNoShelterIsPresent_thenNoShelterMessageIsSent() {
         long chatId = 12345L;
 
-        when(repository.findByDogs()).thenReturn(Optional.empty());
+        when(repository.findByDogs(TypePet.Dog.name())).thenReturn(Optional.empty());
 
         shelterInfoHandler.shelterDogInfo(chatId);
 

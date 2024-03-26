@@ -10,6 +10,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import selfConstructed.animalShelterTBot.keyboard.Keyboard;
 import selfConstructed.animalShelterTBot.model.Shelter;
+import selfConstructed.animalShelterTBot.model.TypePet;
 import selfConstructed.animalShelterTBot.repository.ShelterRepository;
 
 import java.util.Optional;
@@ -47,7 +48,7 @@ public class ShelterInfoHandler {
      * @param chatId The ID of the chat where the information should be sent.
      */
     public void shelterDogInfo(long chatId) {
-        Optional<Shelter> dogShelter = repository.findByDogs();
+        Optional<Shelter> dogShelter = repository.findByDogs(TypePet.Dog.name());
         getInfoAboutShelterDogs(chatId, dogShelter);
     }
 
@@ -57,7 +58,7 @@ public class ShelterInfoHandler {
      * @param chatId The ID of the chat where the information should be sent.
      */
     public void shelterCatInfo(long chatId) {
-        Optional<Shelter> catShelter = repository.findByCats();
+        Optional<Shelter> catShelter = repository.findByCats(TypePet.Cat.name());
         getInfoAboutShelterCats(chatId, catShelter);
     }
 

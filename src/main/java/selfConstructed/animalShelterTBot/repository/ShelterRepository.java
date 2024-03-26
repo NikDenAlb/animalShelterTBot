@@ -2,6 +2,7 @@ package selfConstructed.animalShelterTBot.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import selfConstructed.animalShelterTBot.model.Shelter;
 
 import java.util.Optional;
@@ -11,9 +12,9 @@ import java.util.Optional;
  * @author hlopachev, shinkevich
  */
 public interface ShelterRepository extends JpaRepository<Shelter,String> {
-    @Query(value = "SELECT s FROM Shelter s where s.typeAnimal = 2")
-    Optional<Shelter> findByDogs();
+    @Query(value = "SELECT s FROM Shelter s where s.typePet = :typePet")
+    Optional<Shelter> findByDogs(@Param("typePet") String typePet);
 
-    @Query(value = "SELECT s FROM Shelter s where s.typeAnimal = 1")
-    Optional<Shelter> findByCats();
+    @Query(value = "SELECT s FROM Shelter s where s.typePet = :typePet")
+    Optional<Shelter> findByCats(@Param("typePet") String typePet);
 }

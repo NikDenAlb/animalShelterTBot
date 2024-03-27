@@ -53,13 +53,13 @@ public class MsgHandler {
         Long chatId = message.chat().id();
         String text = message.text();
         logger.info("Получено сообщение от пользователя {}: {}", chatId, text);
-        if ("/start".equals(text)) {
-            welcomeHandler.sendWelcomeMessage(chatId);
-        }
-        if (userRepository.findByChatId(chatId) == null) {
+        if ("/start".equals(text) && userIsPresent(chatId)) {
+            menu.chooseShelterNew(chatId);
+        } else {
             User user = new User();
             user.setChatId(chatId);
             userRepository.save(user);
+            welcomeHandler.sendWelcomeMessage(chatId);
         }
     }
 
@@ -164,5 +164,9 @@ public class MsgHandler {
     private void disableButtonsTemporarily() {
         AtomicBoolean buttonEnabled = new AtomicBoolean(false);
         scheduler.schedule(() -> buttonEnabled.set(true), 30, TimeUnit.SECONDS);
+    }
+
+    private boolean userIsPresent(long chatId) {
+        return userRepository.findByChatId(chatId) != null;
     }
 }

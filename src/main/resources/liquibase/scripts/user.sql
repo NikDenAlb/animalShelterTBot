@@ -32,12 +32,17 @@ CREATE TABLE IF NOT EXISTS shelters
 );
 CREATE TABLE IF NOT EXISTS users
 (
-    id           BIGSERIAL PRIMARY KEY,
-    chat_id      BIGINT    NOT NULL,
-    user_type    type_user NOT NULL,
-    full_name    TEXT,
-    adult        BIGINT,
-    address      TEXT,
-    phone_number TEXT,
-    is_adopted   BIGINT
+    id             BIGSERIAL PRIMARY KEY,
+    chat_id        BIGINT    NOT NULL,
+    user_type      type_user NOT NULL,
+    full_name      TEXT,
+    adult          BIGINT,
+    address        TEXT,
+    phone_number   TEXT,
+    status_adopted BIGINT
 );
+--changeset ihlopachev:2
+ALTER TABLE users
+    DROP status_adopted;
+ALTER TABLE users
+    ADD status_adopteda  BOOLEAN default 'false';

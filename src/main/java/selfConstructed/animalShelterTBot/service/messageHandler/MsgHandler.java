@@ -89,25 +89,11 @@ public class MsgHandler {
         }
         switch (text) {
             case "Коты" -> {
-                if (welcomeHandler.getMessageId() != null) {
-                    DeleteMessage deleteMessage = new DeleteMessage(chatId, welcomeHandler.getMessageId());
-                    telegramBot.execute(deleteMessage);
-                } else if (menu.getMessageId() != null) {
-                    DeleteMessage deleteMessage = new DeleteMessage(chatId, menu.getMessageId());
-                    telegramBot.execute(deleteMessage);
-                }
-                disableButtonsTemporarily();
+                isMessageIdNotNull(chatId);
                 menu.getShelterMenuCatsNew(chatId);
             }
             case "Собаки" -> {
-                if (welcomeHandler.getMessageId() != null) {
-                    DeleteMessage deleteMessage = new DeleteMessage(chatId, welcomeHandler.getMessageId());
-                    telegramBot.execute(deleteMessage);
-                } else if (menu.getMessageId() != null) {
-                    DeleteMessage deleteMessage = new DeleteMessage(chatId, menu.getMessageId());
-                    telegramBot.execute(deleteMessage);
-                }
-                disableButtonsTemporarily();
+                isMessageIdNotNull(chatId);
                 menu.getShelterMenuDogsNew(chatId);
             }
             case "Информация о приюте для собак" -> {
@@ -162,6 +148,17 @@ public class MsgHandler {
                 menu.chooseShelterReWrite(chatId);
             }
         }
+    }
+
+    private void isMessageIdNotNull(Long chatId) {
+        if (welcomeHandler.getMessageId() != null) {
+            DeleteMessage deleteMessage = new DeleteMessage(chatId, welcomeHandler.getMessageId());
+            telegramBot.execute(deleteMessage);
+        } else if (menu.getMessageId() != null) {
+            DeleteMessage deleteMessage = new DeleteMessage(chatId, menu.getMessageId());
+            telegramBot.execute(deleteMessage);
+        }
+        disableButtonsTemporarily();
     }
 
     /**

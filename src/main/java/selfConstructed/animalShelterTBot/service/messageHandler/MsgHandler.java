@@ -40,7 +40,6 @@ public class MsgHandler {
     private final ShelterAdoptionInfo shelterAdoptionInfo;
     private final UserRepository userRepository;
 
-
     private final List<Integer> messagesId = new ArrayList<>();
     private final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
 
@@ -53,13 +52,13 @@ public class MsgHandler {
         Long chatId = message.chat().id();
         String text = message.text();
         logger.info("Получено сообщение от пользователя {}: {}", chatId, text);
-        if ("/start".equals(text)) {
-            welcomeHandler.sendWelcomeMessage(chatId);
-        }
-        if (userRepository.findByChatId(chatId) == null) {
+        if ("/start".equals(text) && userIsPresent(chatId)) {
+            menu.chooseShelterNew(chatId);
+        } else {
             User user = new User();
             user.setChatId(chatId);
             userRepository.save(user);
+            welcomeHandler.sendWelcomeMessage(chatId);
         }
     }
 
@@ -90,19 +89,11 @@ public class MsgHandler {
         }
         switch (text) {
             case "Коты" -> {
-                if (welcomeHandler.getMessageId() != null) {
-                    DeleteMessage deleteMessage = new DeleteMessage(chatId, welcomeHandler.getMessageId());
-                    telegramBot.execute(deleteMessage);
-                }
-                disableButtonsTemporarily();
+                isMessageIdNotNull(chatId);
                 menu.getShelterMenuCatsNew(chatId);
             }
             case "Собаки" -> {
-                if (welcomeHandler.getMessageId() != null) {
-                    DeleteMessage deleteMessage = new DeleteMessage(chatId, welcomeHandler.getMessageId());
-                    telegramBot.execute(deleteMessage);
-                }
-                disableButtonsTemporarily();
+                isMessageIdNotNull(chatId);
                 menu.getShelterMenuDogsNew(chatId);
             }
             case "Информация о приюте для собак" -> {
@@ -141,10 +132,11 @@ public class MsgHandler {
             }
             case "Назад" -> {
                 DeleteMessages deleteMessages = new DeleteMessages(chatId, messagesId.stream()
-                        .mapToInt(Integer::intValue).toArray());
+                        .mapToInt(Integer::intValue)
+                        .toArray());
                 telegramBot.execute(deleteMessages);
                 disableButtonsTemporarily();
-                welcomeHandler.sendWelcomeMessage(chatId);
+                menu.chooseShelterNew(chatId);
             }
             case "Отчет о собаке", "Отчет о коте", "Волонтер",
                     "Приютить кота", "Приютить собаку" -> {
@@ -158,11 +150,26 @@ public class MsgHandler {
         }
     }
 
+    private void isMessageIdNotNull(Long chatId) {
+        if (welcomeHandler.getMessageId() != null) {
+            DeleteMessage deleteMessage = new DeleteMessage(chatId, welcomeHandler.getMessageId());
+            telegramBot.execute(deleteMessage);
+        } else if (menu.getMessageId() != null) {
+            DeleteMessage deleteMessage = new DeleteMessage(chatId, menu.getMessageId());
+            telegramBot.execute(deleteMessage);
+        }
+        disableButtonsTemporarily();
+    }
+
     /**
      * Temporarily disables buttons for a specified time.
      */
     private void disableButtonsTemporarily() {
         AtomicBoolean buttonEnabled = new AtomicBoolean(false);
         scheduler.schedule(() -> buttonEnabled.set(true), 30, TimeUnit.SECONDS);
+    }
+
+    private boolean userIsPresent(long chatId) {
+        return userRepository.findByChatId(chatId) != null;
     }
 }

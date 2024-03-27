@@ -41,3 +41,10 @@ CREATE TABLE IF NOT EXISTS users
     phone_number TEXT,
     is_adopted   BIGINT
 );
+-- changeset oshinkevich:2
+UPDATE shelters
+SET pet_type = 'Cat'
+WHERE id = 1;
+UPDATE shelters
+SET pet_type = 'Dog'
+WHERE id = 2;

@@ -40,7 +40,6 @@ public class MsgHandler {
     private final ShelterAdoptionInfo shelterAdoptionInfo;
     private final UserRepository userRepository;
 
-
     private final List<Integer> messagesId = new ArrayList<>();
     private final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
 
@@ -93,6 +92,9 @@ public class MsgHandler {
                 if (welcomeHandler.getMessageId() != null) {
                     DeleteMessage deleteMessage = new DeleteMessage(chatId, welcomeHandler.getMessageId());
                     telegramBot.execute(deleteMessage);
+                } else if (menu.getMessageId() != null) {
+                    DeleteMessage deleteMessage = new DeleteMessage(chatId, menu.getMessageId());
+                    telegramBot.execute(deleteMessage);
                 }
                 disableButtonsTemporarily();
                 menu.getShelterMenuCatsNew(chatId);
@@ -100,6 +102,9 @@ public class MsgHandler {
             case "Собаки" -> {
                 if (welcomeHandler.getMessageId() != null) {
                     DeleteMessage deleteMessage = new DeleteMessage(chatId, welcomeHandler.getMessageId());
+                    telegramBot.execute(deleteMessage);
+                } else if (menu.getMessageId() != null) {
+                    DeleteMessage deleteMessage = new DeleteMessage(chatId, menu.getMessageId());
                     telegramBot.execute(deleteMessage);
                 }
                 disableButtonsTemporarily();
@@ -141,10 +146,11 @@ public class MsgHandler {
             }
             case "Назад" -> {
                 DeleteMessages deleteMessages = new DeleteMessages(chatId, messagesId.stream()
-                        .mapToInt(Integer::intValue).toArray());
+                        .mapToInt(Integer::intValue)
+                        .toArray());
                 telegramBot.execute(deleteMessages);
                 disableButtonsTemporarily();
-                welcomeHandler.sendWelcomeMessage(chatId);
+                menu.chooseShelterNew(chatId);
             }
             case "Отчет о собаке", "Отчет о коте", "Волонтер",
                     "Приютить кота", "Приютить собаку" -> {

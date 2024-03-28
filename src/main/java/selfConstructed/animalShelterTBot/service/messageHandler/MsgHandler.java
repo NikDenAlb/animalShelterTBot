@@ -10,11 +10,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import selfConstructed.animalShelterTBot.model.User;
+import selfConstructed.animalShelterTBot.repository.ReportRepository;
 import selfConstructed.animalShelterTBot.repository.UserRepository;
-import selfConstructed.animalShelterTBot.service.MenuService;
-import selfConstructed.animalShelterTBot.service.ShelterAdoptionInfo;
-import selfConstructed.animalShelterTBot.service.ShelterInfoHandler;
-import selfConstructed.animalShelterTBot.service.WelcomeHandler;
+import selfConstructed.animalShelterTBot.service.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -39,6 +37,8 @@ public class MsgHandler {
     private final WelcomeHandler welcomeHandler;
     private final ShelterAdoptionInfo shelterAdoptionInfo;
     private final UserRepository userRepository;
+    private final ReportRepository reportRepository;
+    private final ProcessReport processReport;
 
     private final List<Integer> messagesId = new ArrayList<>();
     private final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
@@ -51,6 +51,7 @@ public class MsgHandler {
     public void handleMessage(Message message) {
         Long chatId = message.chat().id();
         String text = message.text();
+        String photoCaption = message.caption(); // Получаем подпись к фотографии, если есть
         logger.info("Получено сообщение от пользователя {}: {}", chatId, text);
         if ("/start".equals(text) && userIsPresent(chatId)) {
             menu.chooseShelterNew(chatId);
@@ -60,6 +61,17 @@ public class MsgHandler {
             userRepository.save(user);
             welcomeHandler.sendWelcomeMessage(chatId);
         }
+//        if (userRepository.findByStatusAdopted(chatId)) {
+//            if (text != null) {
+//                logger.info("Получено текстовое сообщение от пользователя {}: {}", chatId, text);
+//
+//        Добавьте здесь обработку сообщений о рационе, общем самочувствии и изменениях в поведении
+//            }
+//            if (message.photo() != null && message.photo().length > 0) {
+//                logger.info("Получена фотография от пользователя {}: {}", chatId, message.photo()[0].fileId());
+//                reportRepository.savePhoto();
+//            }
+//        }
     }
 
     /**
@@ -138,8 +150,10 @@ public class MsgHandler {
                 disableButtonsTemporarily();
                 menu.chooseShelterNew(chatId);
             }
-            case "Отчет о собаке", "Отчет о коте", "Волонтер",
-                    "Приютить кота", "Приютить собаку" -> {
+            case "Отчет о собаке", "Отчет о коте" -> {
+                processReport.processReportCallBack(chatId, callbackQuery);
+            }
+            case "Волонтер", "Приютить кота", "Приютить собаку" -> {
                 disableButtonsTemporarily();
                 menu.sendMock(chatId);
             }

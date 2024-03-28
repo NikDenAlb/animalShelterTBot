@@ -45,4 +45,4 @@ CREATE TABLE IF NOT EXISTS users
 ALTER TABLE users
     DROP status_adopted;
 ALTER TABLE users
-    ADD status_adopteda  BOOLEAN default 'false';
+    ADD status_adopted  BOOLEAN default 'false';

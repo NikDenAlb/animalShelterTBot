@@ -53,7 +53,7 @@ public class MsgHandler {
         String text = message.text();
         logger.info("Получено сообщение от пользователя {}: {}", chatId, text);
         if ("/start".equals(text) && userIsPresent(chatId)) {
-            menu.chooseShelterNew(chatId);
+            menu.chooseShelterReWrite(chatId);
         } else {
             User user = new User();
             user.setChatId(chatId);
